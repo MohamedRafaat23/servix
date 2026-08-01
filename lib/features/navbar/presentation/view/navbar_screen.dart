@@ -1,23 +1,29 @@
+// Asset paths for navigation icons
+// Replace these with the real asset paths in your project if different
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_images.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/di/service_locator.dart';
 import 'package:servix/core/utils/functions/translation.dart';
+import 'package:servix/features/favorite/presentaion/view/favorites_screen.dart';
+import 'package:servix/features/home/presentaion/view/home_screen.dart';
+import 'package:servix/features/navbar/presentation/view/widgets/nav_items.dart';
+import 'package:servix/features/order/presentaion/view/orders_screen.dart';
+import 'package:servix/features/profile/presentaion/view/profile_screen.dart';
 import '../bloc/navbar_bloc.dart';
 import '../bloc/navbar_event.dart';
 import '../bloc/navbar_state.dart';
 
-class _PlaceholderTab extends StatelessWidget {
+class PlaceholderTab extends StatelessWidget {
   final String title;
-  const _PlaceholderTab(this.title);
+  const PlaceholderTab(this.title);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(child: Text(title)),
-    );
+    return Scaffold(body: Center(child: Text(title)));
   }
 }
 
@@ -25,20 +31,25 @@ class NavbarScreen extends StatelessWidget {
   const NavbarScreen({super.key});
 
   static const List<Widget> _pages = [
-    _PlaceholderTab('Home'),
-    _PlaceholderTab('Orders'),
-    _PlaceholderTab('Favorites'),
-    _PlaceholderTab('Profile'),
+    HomeScreen(),
+    OrdersScreen(),
+    FavoritesScreen(),
+    ProfileScreen(),
   ];
 
-  Widget _navIcon(String assetPath, bool isSelected) {
-    return Image.asset(
-      assetPath,
-      width: 24,
-      height: 24,
-      color: isSelected ? AppColors.primaryColor : AppColors.greyColor,
-    );
-  }
+  static const List<String> _iconPaths = [
+    AppImages.home,
+    AppImages.order,
+    AppImages.favorite,
+    AppImages.profile,
+  ];
+
+  static const List<String> _labelKeys = [
+    'home',
+    'orders',
+    'favorites',
+    'profile',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -47,43 +58,50 @@ class NavbarScreen extends StatelessWidget {
       child: BlocBuilder<NavbarBloc, NavbarState>(
         builder: (context, state) {
           return Scaffold(
-            body: IndexedStack(
-              index: state.currentIndex,
-              children: _pages,
-            ),
-            bottomNavigationBar: NavigationBar(
-              selectedIndex: state.currentIndex,
-              height: context.byDevice(
-                mobilePortrait: 64.height,
-                mobileLandscape: 60.height,
-                tablet: 72.height,
+            extendBody: true, // يخلي المحتوى يمتد تحت النافبار العائم
+            body: IndexedStack(index: state.currentIndex, children: _pages),
+            bottomNavigationBar: SafeArea(
+              child: Padding(
+                padding: EdgeInsets.only(
+                  left: 20.width,
+                  right: 20.width,
+                  bottom: 12.height,
+                ),
+                child: Container(
+                  height: context.byDevice(
+                    mobilePortrait: 100.height,
+                    mobileLandscape: 92.height,
+                    tablet: 106.height,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 16.width, vertical: 8.height),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: .88),
+                    borderRadius: BorderRadius.circular(42),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: .14),
+                        blurRadius: 24,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: List.generate(_pages.length, (index) {
+                      final isSelected = state.currentIndex == index;
+                      return NavItem(
+                        assetPath: _iconPaths[index],
+                        label: _labelKeys[index].trans,
+                        isSelected: isSelected,
+                        onTap: () {
+                          context.read<NavbarBloc>().add(NavbarPageChanged(index));
+                        },
+                      );
+                    }),
+                  ),
+                ),
               ),
-              onDestinationSelected: (index) {
-                context.read<NavbarBloc>().add(NavbarPageChanged(index));
-              },
-              backgroundColor: AppColors.whiteColor,
-              destinations: [
-                NavigationDestination(
-                  icon: _navIcon(AppImages.home, false),
-                  selectedIcon: _navIcon(AppImages.home, true),
-                  label: 'home'.trans,
-                ),
-                NavigationDestination(
-                  icon: _navIcon(AppImages.order, false),
-                  selectedIcon: _navIcon(AppImages.order, true),
-                  label: 'orders'.trans,
-                ),
-                NavigationDestination(
-                  icon: _navIcon(AppImages.favorite, false),
-                  selectedIcon: _navIcon(AppImages.favorite, true),
-                  label: 'favorites'.trans,
-                ),
-                NavigationDestination(
-                  icon: _navIcon(AppImages.profile, false),
-                  selectedIcon: _navIcon(AppImages.profile, true),
-                  label: 'profile'.trans,
-                ),
-              ],
             ),
           );
         },

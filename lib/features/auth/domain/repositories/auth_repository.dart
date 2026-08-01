@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:servix/core/errors/failure.dart';
 import 'package:servix/core/utils/constants/app_enums.dart';
 import '../entities/user_entity.dart';
-
+//contract to be implemented by the repository implementation class
 abstract class AuthRepository {
   Future<Either<Failure, UserEntity>> login({
     required String email,

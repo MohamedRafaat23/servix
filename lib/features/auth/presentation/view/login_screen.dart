@@ -34,7 +34,7 @@ class LoginScreen extends StatelessWidget {
                 );
               }
               if (state.status == LoginStatus.success) {
-                context.goNamed(AppRoutesNames.home);
+                context.goNamed(AppRoutesNames.navbar);
               }
             },
             child: Scaffold(
@@ -122,6 +122,7 @@ class LoginScreen extends StatelessWidget {
                               ),
                             ),
                             SizedBox(height: 20.height),
+                            //login
                             BlocBuilder<LoginBloc, LoginState>(
                               buildWhen: (previous, current) =>
                                   previous.status != current.status,
@@ -155,6 +156,7 @@ class LoginScreen extends StatelessWidget {
                                     fontSize: context.responsiveFontScale(13),
                                   ),
                                 ),
+                                //Register 
                                 TextButton(
                                   onPressed: () {
                                     context.goNamed(AppRoutesNames.register);

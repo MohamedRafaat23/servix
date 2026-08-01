@@ -7,6 +7,7 @@ import 'package:servix/features/auth/presentation/view/login_screen.dart';
 import 'package:servix/features/auth/presentation/view/otp_screen.dart';
 import 'package:servix/features/auth/presentation/view/register_screen.dart';
 import 'package:servix/features/auth/presentation/view/reset_passwoed_screen.dart';
+import 'package:servix/features/home/presentaion/view/home_screen.dart';
 import 'package:servix/features/navbar/presentation/view/navbar_screen.dart';
 import 'package:servix/features/onboarding/presentation/view/onboarding_screen.dart.dart';
 import 'package:servix/features/splash/presentation/view/splash_screen.dart';
@@ -59,21 +60,27 @@ class AppRoutes {
           return ResetPasswordScreen(resetToken: resetToken);
         },
       ),
-    GoRoute(
-  name: AppRoutesNames.otpScreen,
-  path: '/otp_screen/:flow',
-  builder: (context, state) {
-    final phone = state.uri.queryParameters['phone'] ?? '';
-    final email = state.uri.queryParameters['email'] ?? '';
-    final flow = state.pathParameters['flow'] ?? '';
-    final verifyType = OtpVerifyType.fromString(flow);
-    return OtpScreen(email: email, phone: phone, verifyType: verifyType);
-  },
-),
+     GoRoute(
+            name: AppRoutesNames.otpScreen,
+            path: '/otp_screen/:flow',
+            builder: (context, state) {
+              final phone = state.uri.queryParameters['phone'] ?? '';
+              final email = state.uri.queryParameters['email'] ?? '';
+              final flow = state.pathParameters['flow'] ?? '';
+              final verifyType = OtpVerifyType.fromString(flow);
+              return OtpScreen(email: email, phone: phone, verifyType: verifyType);
+            },
+          ),
       GoRoute(
         name: AppRoutesNames.navbar,
         path: AppRoutesNames.navbar,
         builder: (context, state) => const NavbarScreen(),
+      ),
+      //home
+      GoRoute(
+        name: AppRoutesNames.home,
+        path: AppRoutesNames.home,
+        builder: (context, state) => HomeScreen(),
       ),
     ],
   );

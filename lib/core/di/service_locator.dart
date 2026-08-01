@@ -29,6 +29,12 @@ import 'package:servix/features/auth/domain/usecases/verify_otp_usecase.dart';
 import 'package:servix/features/auth/presentation/bloc/forget_password_bloc/forgetpassword_bloc.dart';
 import 'package:servix/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:servix/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
+import 'package:servix/features/home/data/repositories/facke_home_repository.dart';
+import 'package:servix/features/home/domain/repositories/home_repository.dart';
+import 'package:servix/features/home/domain/usecases/get_banners_usecase.dart';
+import 'package:servix/features/home/domain/usecases/get_categories_usecase.dart';
+import 'package:servix/features/home/domain/usecases/get_nearby_professionals_usecase.dart';
+import 'package:servix/features/home/presentaion/bloc/home_bloc.dart';
 import 'package:servix/features/navbar/presentation/bloc/navbar_bloc.dart';
 import 'package:servix/features/onboarding/presentation/bloc/onboarding_bloc.dart';
 import 'package:servix/features/auth/domain/usecases/check_auth_status_usecase.dart';
@@ -72,10 +78,15 @@ Future<void> initServiceLocator() async {
   // Fake implementation used during UI-only development, before the real
   // API is ready. Set useFakeApi = false above once the backend is ready —
   // no other code (UseCases, Blocs, Screens) needs to change.
+  //"كل واحد يطلب AuthRepository، اديله AuthRepositoryImpl." من غير ما يعرف ال usecase
   sl.registerLazySingleton<AuthRepository>(
     () => useFakeApi
         ? FakeAuthRepository()
         : AuthRepositoryImpl(sl<ApiConsumer>()),
+  );
+  sl.registerLazySingleton<HomeRepository>(
+    () =>
+        FakeHomeRepository(), // لو عايز حقيقي بعدين: useFakeApi ? FakeHomeRepository() : HomeRepositoryImpl(...)
   );
 
   // UseCases
@@ -102,7 +113,16 @@ Future<void> initServiceLocator() async {
     () => ResendOtpUseCase(sl<AuthRepository>()),
   );
 
-  sl.registerFactory<LoginBloc>(() => LoginBloc(sl<LoginUseCase>()));
+  sl.registerLazySingleton<GetBannersUseCase>(
+    () => GetBannersUseCase(sl<HomeRepository>()),
+  );
+  sl.registerLazySingleton<GetCategoriesUseCase>(
+    () => GetCategoriesUseCase(sl<HomeRepository>()),
+  );
+
+  sl.registerLazySingleton<GetNearbyProfessionalsUseCase>(
+    () => GetNearbyProfessionalsUseCase(sl<HomeRepository>()),
+  );
 
   // Blocs
 
@@ -114,6 +134,19 @@ Future<void> initServiceLocator() async {
     ),
   );
 
+  sl.registerLazySingleton<CheckAuthStatusUseCase>(
+    () => CheckAuthStatusUseCase(sl<AuthRepository>()),
+  );
+  sl.registerFactory<SplashBloc>(
+    () => SplashBloc(sl<CheckAuthStatusUseCase>()),
+  );
+  sl.registerFactory<NavbarBloc>(() => NavbarBloc());
+
+  sl.registerFactory<OnboardingBloc>(
+    () => OnboardingBloc(sl<PreferenceUtils>()),
+  );
+  sl.registerFactory<LoginBloc>(() => LoginBloc(sl<LoginUseCase>()));
+
   sl.registerFactory<ForgetPasswordBloc>(
     () => ForgetPasswordBloc(
       sl<ForgetPasswordUseCase>(),
@@ -123,16 +156,11 @@ Future<void> initServiceLocator() async {
 
   sl.registerFactory<RegisterBloc>(() => RegisterBloc(sl<RegisterUsecase>()));
 
-  sl.registerLazySingleton<CheckAuthStatusUseCase>(
-    () => CheckAuthStatusUseCase(sl<AuthRepository>()),
+  sl.registerFactory<HomeBloc>(
+    () => HomeBloc(
+      sl<GetCategoriesUseCase>(),
+      sl<GetNearbyProfessionalsUseCase>(),
+      sl<GetBannersUseCase>(),
+    ),
   );
-
-  sl.registerFactory<OnboardingBloc>(
-    () => OnboardingBloc(sl<PreferenceUtils>()),
-  );
-  sl.registerFactory<SplashBloc>(
-    () => SplashBloc(sl<CheckAuthStatusUseCase>()),
-  );
-   sl.registerFactory<NavbarBloc>(() => NavbarBloc());
-
 }

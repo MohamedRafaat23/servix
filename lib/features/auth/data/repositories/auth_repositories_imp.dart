@@ -7,6 +7,8 @@ import '../../domain/entities/user_entity.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../models/user_model.dart';
 
+//
+
 class AuthRepositoryImpl implements AuthRepository {
   final ApiConsumer apiConsumer;
   AuthRepositoryImpl(this.apiConsumer);

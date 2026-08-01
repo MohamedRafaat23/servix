@@ -34,6 +34,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await local.saveLocalData(data: user.accessToken, keyType: LocalEnumKey.accessToken);
         await local.saveLocalData(data: user.refreshToken, keyType: LocalEnumKey.refreshToken);
         await local.saveLocalData(data: user.id, keyType: LocalEnumKey.userId);
+        await local.saveLocalData(data: user.name, keyType: LocalEnumKey.fullName);
         emit(state.copyWith(status: LoginStatus.success, user: user));
       },
     );
