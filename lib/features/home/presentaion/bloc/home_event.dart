@@ -10,6 +10,14 @@ class HomeStarted extends HomeEvent {
   const HomeStarted();
 }
 
+class HomeSearchQueryChanged extends HomeEvent {
+  final String query;
+  const HomeSearchQueryChanged(this.query);
+
+  @override
+  List<Object?> get props => [query];
+}
+
 class HomeBannerPageChanged extends HomeEvent {
   final int index;
   const HomeBannerPageChanged(this.index);

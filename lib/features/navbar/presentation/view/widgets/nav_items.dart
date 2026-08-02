@@ -32,12 +32,16 @@ class NavItem extends StatelessWidget {
               width: 56.width,
               height: 56.width,
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF1F7BFF) : const Color(0xFFF0F1F3),
+                color: isSelected
+                    ? const Color(0xFF1F7BFF)
+                    : const Color(0xFFF0F1F3),
                 shape: BoxShape.circle,
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color: const Color(0xFF1F7BFF).withOpacity(0.25),
+                          color: const Color(
+                            0xFF1F7BFF,
+                          ).withValues(alpha: 0.25),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -56,7 +60,9 @@ class NavItem extends StatelessWidget {
             AnimatedDefaultTextStyle(
               duration: const Duration(milliseconds: 200),
               style: TextStyle(
-                color: isSelected ? const Color(0xFF1F7BFF) : Colors.transparent,
+                color: isSelected
+                    ? const Color(0xFF1F7BFF)
+                    : Colors.transparent,
                 fontSize: context.responsiveFontScale(12),
                 fontWeight: FontWeight.w700,
               ),

@@ -189,4 +189,15 @@ static String get next => "next".trans;
       "delete_account_confirm_title".trans;
   static String get deleteAccountConfirmMessage =>
       "delete_account_confirm_message".trans;
+
+   //services
+   static String get services => "services".trans;
+  static String get allservices => "all_services".trans;
+  static String get topProfessionals => "top_professionals".trans;
+  static String get searchProfessionals => "searchProfessionals".trans;
+  static String get about => "about".trans;
+  static String get reviews => "reviews".trans;
+  static  String jobs = 'Jobs';
+  static  String get experience => "Experience".trans;
+  static  String get serviceArea => 'Service Area'.trans;
 }

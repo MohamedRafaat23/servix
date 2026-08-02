@@ -1,6 +1,5 @@
 // Asset paths for navigation icons
 // Replace these with the real asset paths in your project if different
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,7 +72,10 @@ class NavbarScreen extends StatelessWidget {
                     mobileLandscape: 92.height,
                     tablet: 106.height,
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 16.width, vertical: 8.height),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 16.width,
+                    vertical: 8.height,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: .88),
                     borderRadius: BorderRadius.circular(42),
@@ -95,7 +97,9 @@ class NavbarScreen extends StatelessWidget {
                         label: _labelKeys[index].trans,
                         isSelected: isSelected,
                         onTap: () {
-                          context.read<NavbarBloc>().add(NavbarPageChanged(index));
+                          context.read<NavbarBloc>().add(
+                            NavbarPageChanged(index),
+                          );
                         },
                       );
                     }),

@@ -162,6 +162,18 @@
 
   "continue_as_guest": "المتابعة كزائر",
   "skip": "تخطي",
-  "next": "التالي"
+  "next": "التالي",
+  "previous": "السابق",
+  "all_services": "جميع الخدمات",
+  "services": "الخدمات",
+  "top_professionals": "أفضل المحترفين",
+  "searchProfessionals": "ابحث عن المحترفين",
+  "reviews" : "المراجعات",
+  "seeAll": "عرض الكل",
+  "about": "حول",
+  "experience": "الخبرة",
+  "serviceArea": "منطقة الخدمة",
+  "jobs":"الوظائف"
+  
 }
 

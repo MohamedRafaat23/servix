@@ -21,8 +21,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     this.getBannersUseCase,
   ) : super(const HomeState()) {
     on<HomeStarted>(_onHomeStarted);
+    on<HomeSearchQueryChanged>(_onSearchQueryChanged);
     on<HomeBannerPageChanged>(_onBannerPageChanged);
     on<HomeBannerAutoAdvanced>(_onBannerAutoAdvanced);
+  }
+
+  Future<void> _onSearchQueryChanged(HomeSearchQueryChanged event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(searchQuery: event.query));
   }
 
   Future<void> _onHomeStarted(HomeStarted event, Emitter<HomeState> emit) async {

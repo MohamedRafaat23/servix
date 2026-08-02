@@ -1,9 +1,9 @@
 // lib/features/home/presentation/view/home_screen.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:servix/config/router/app_routes_names.dart';
 import 'package:servix/core/di/service_locator.dart';
-import 'package:servix/core/utils/constants/app_enums.dart';
-import 'package:servix/core/utils/functions/callback_token.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
 import '../bloc/home_bloc.dart';
@@ -13,6 +13,7 @@ import 'widgets/category_item.dart';
 import 'widgets/home_profile_widget.dart';
 import 'widgets/professional_card.dart';
 import 'widgets/promo_banner_carousel.dart';
+import 'widgets/search_widget.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,16 +23,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late final Future<String?> _userName;
-
-  @override
-  void initState() {
-    super.initState();
-    _userName = sl<HandleMulticallLocal>().getLocalData(
-      keyType: LocalEnumKey.fullName,
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -54,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     SizedBox(height: 8.height),
                     HomeProfileWidget(
-                      name: _userName == null ? 'User' : 'User',
+                      name: 'User',
                       address: 'London, st12', // TODO: هتيجي من بيانات المستخدم الحقيقية
                       onTap: () {
                         // TODO: الانتقال لشاشة البروفايل
@@ -64,40 +55,52 @@ class _HomeScreenState extends State<HomeScreen> {
                       },
                     ),
                     SizedBox(height: 16.height),
-                    TextField(
-                      decoration: InputDecoration(
-                        hintText: 'search plumbers, cleaners...',
-                        prefixIcon: const Icon(Icons.search),
-                        suffixIcon: const Icon(Icons.tune),
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(14),
-                          borderSide: BorderSide.none,
-                        ),
-                      ),
+                    SearchWidget(
+                      hintText: 'search plumbers, cleaners...',
+                      icon: Icons.search,
+                      onChanged: (value) {
+                        context.read<HomeBloc>().add(HomeSearchQueryChanged(value));
+                      },
                     ),
                     SizedBox(height: 16.height),
                     PromoBannerCarousel(
                       onBookNow: (banner) {
-                        // TODO: هتوديه فين وقت الضغط على Book now
                       },
                     ),
                     SizedBox(height: 24.height),
-                    _SectionHeader(title: 'categorise', onSeeAll: () {}),
+                    
+                    _SectionHeader(
+                      title: 'categorise',
+                      onSeeAll: () {
+                        context.go(AppRoutesNames.services);
+                      },
+                    ),
                     SizedBox(height: 12.height),
-                    GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.categories.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        mainAxisSpacing: 12,
-                        crossAxisSpacing: 12,
-                        childAspectRatio: 0.95,
-                      ),
-                      itemBuilder: (context, index) {
-                        return CategoryItem(category: state.categories[index]);
+                    Builder(
+                      builder: (context) {
+                        final filteredCategories = state.categories
+                            .where((category) => category.name.toLowerCase().contains(state.searchQuery.toLowerCase()))
+                            .toList();
+                        return GridView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: filteredCategories.length,
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
+                            childAspectRatio: 0.95,
+                          ),
+                          itemBuilder: (context, index) {
+                            final category = filteredCategories[index];
+                            return CategoryItem(
+                              category: category,
+                              onTap: () {
+                                context.push(AppRoutesNames.serviceDetails, extra: category);
+                              },
+                            );
+                          },
+                        );
                       },
                     ),
                     SizedBox(height: 24.height),
@@ -106,10 +109,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     ListView.separated(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
-                      itemCount: state.professionals.length,
+                      itemCount: state.professionals
+                          .where((professional) => professional.name.toLowerCase().contains(state.searchQuery.toLowerCase()) ||
+                              professional.profession.toLowerCase().contains(state.searchQuery.toLowerCase()))
+                          .length,
                       separatorBuilder: (_, __) => SizedBox(height: 12.height),
                       itemBuilder: (context, index) {
-                        return ProfessionalCard(professional: state.professionals[index]);
+                        final filteredProfessionals = state.professionals
+                            .where((professional) => professional.name.toLowerCase().contains(state.searchQuery.toLowerCase()) ||
+                                professional.profession.toLowerCase().contains(state.searchQuery.toLowerCase()))
+                            .toList();
+                        return ProfessionalCard(
+                          professional: filteredProfessionals[index],
+                          onTap: () {
+                            context.push(
+                              AppRoutesNames.serviceDetails,
+                              extra: filteredProfessionals[index],
+                            );
+                          },
+                        );
                       },
                     ),
                     SizedBox(height: 20.height),

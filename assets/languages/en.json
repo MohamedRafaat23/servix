@@ -157,5 +157,13 @@
   "welcome_to_app": "Welcome To App Name\nBook Your Home Service In Minutes And Let Us Handle The Rest.",
   "continue_as_guest": "Continue as guest",
   "skip": "Skip",
-  "next": "Next"
+  "next": "Next",
+  "previous": "Previous",
+  "all_services": "All Services",
+  "services": "Services",
+  "searchProfessionals": "Search professionals",
+  "about": "About",
+  "experience": "Experience",
+  "serviceArea": "Service Area",
+  "jobs":"jops"
 }
