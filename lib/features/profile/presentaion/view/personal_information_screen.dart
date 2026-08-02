@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
-import 'package:servix/core/utils/constants/app_images.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
 import 'package:servix/features/profile/presentaion/bloc/profile_bloc.dart';
 import 'package:servix/features/profile/presentaion/bloc/profile_event.dart';
 import 'package:servix/features/profile/presentaion/bloc/profile_state.dart';
+import 'package:servix/features/profile/presentaion/view/widgets/profile_appbar.dart';
+import 'widgets/profile_avatar_editable.dart';
+import 'widgets/profile_feedback_listener.dart';
+import 'widgets/profile_save_button.dart';
 import 'widgets/profile_widgets.dart';
 
 class PersonalInformationScreen extends StatefulWidget {
@@ -50,46 +53,14 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
   Widget build(BuildContext context) {
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
-        if (state.successMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.successMessage!),
-              backgroundColor: AppColors.lightPrimaryColor,
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          );
-        }
-        if (state.errorMessage != null) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(state.errorMessage!),
-              backgroundColor: const Color(0xFFEF4444),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            ),
-          );
-        }
+        showProfileFeedback(
+          context,
+          successMessage: state.successMessage,
+          errorMessage: state.errorMessage,
+        );
       },
       child: Scaffold(
-        backgroundColor: Colors.transparent,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          centerTitle: true,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Color(0xFF1E293B)),
-            onPressed: () => Navigator.pop(context),
-          ),
-          title: Text(
-            'Personal Information',
-            style: TextStyle(
-              fontSize: context.responsiveFontScale(18),
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1E293B),
-            ),
-          ),
-        ),
+        appBar: const ProfileAppBar(title: 'Personal Information'),
         body: AppBackground(
           child: Form(
             key: _formKey,
@@ -101,42 +72,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     child: Column(
                       children: [
                         SizedBox(height: 24.height),
-                        // ── Avatar with edit badge ──────────────────────────
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: AppColors.lightPrimaryColor.withValues(alpha: .15),
-                                    blurRadius: 20,
-                                    offset: const Offset(0, 6),
-                                  ),
-                                ],
-                              ),
-                              child: CircleAvatar(
-                                radius: 48.width,
-                                backgroundColor: const Color(0xFFDDE7F0),
-                                child: Image.asset(AppImages.profile),
-                              ),
-                            ),
-                            Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: Container(
-                                width: 28.width,
-                                height: 28.width,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFF97316),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Icon(Icons.edit, color: Colors.white, size: 14.width),
-                              ),
-                            ),
-                          ],
-                        ),
+                        const ProfileAvatarEditable(),
                         SizedBox(height: 8.height),
                         ValueListenableBuilder<TextEditingValue>(
                           valueListenable: _nameCtrl,
@@ -188,45 +124,13 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                     ),
                   ),
                 ),
-                SafeArea(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: context.responsiveHorizontalPadding,
-                      vertical: 16.height,
-                    ),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 52.height,
-                      child: BlocBuilder<ProfileBloc, ProfileState>(
-                        builder: (context, state) {
-                          return ElevatedButton(
-                            onPressed: state.isSubmitting ? null : _save,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.lightPrimaryColor,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(28.radius),
-                              ),
-                            ),
-                            child: state.isSubmitting
-                                ? const SizedBox(
-                                    width: 20,
-                                    height: 20,
-                                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-                                  )
-                                : Text(
-                                    'Save',
-                                    style: TextStyle(
-                                      fontSize: context.responsiveFontScale(16),
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
+                BlocBuilder<ProfileBloc, ProfileState>(
+                  builder: (context, state) {
+                    return ProfileSaveButton(
+                      isSubmitting: state.isSubmitting,
+                      onTap: _save,
+                    );
+                  },
                 ),
               ],
             ),

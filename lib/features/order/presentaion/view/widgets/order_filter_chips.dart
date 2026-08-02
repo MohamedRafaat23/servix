@@ -28,7 +28,7 @@ class OrderFilterChips extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         padding: EdgeInsets.symmetric(horizontal: context.responsiveHorizontalPadding),
         itemCount: filters.length,
-        separatorBuilder: (_, __) => SizedBox(width: 8.width),
+        separatorBuilder: (_, _) => SizedBox(width: 8.width),
         itemBuilder: (_, i) {
           final (label, type) = filters[i];
           final isSelected = selectedFilter == type;

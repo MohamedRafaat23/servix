@@ -35,7 +35,6 @@ class OrderDetailsScreen extends StatelessWidget {
         }
       },
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,

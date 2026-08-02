@@ -12,7 +12,7 @@ class AppImages {
   static const String notification = 'assets/images/notification_Icon.png';
   static const String order = 'assets/images/order.png';
   static const String profile = 'assets/images/profile.png';
-  static const String backgroundImage = 'assets/images/background.png';
+  static const String backgroundImage = 'assets/images/background_image.png';
   static const String search = 'assets/images/search-normal.png';
   static const String bannar = 'assets/images/bannar.png';
 
