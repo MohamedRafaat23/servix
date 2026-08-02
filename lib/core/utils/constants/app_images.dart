@@ -25,6 +25,13 @@ class AppImages {
   static const String mechanical = 'assets/images/mechanical.png';
   static const String painting = 'assets/images/painting.png';
   static const String plumbing = 'assets/images/plumbing.png';
+  static const String termsPrivacy = 'assets/images/terms_privacy.png';
+  static const String nightIcon = 'assets/images/night_icon.png';
+  static const String language = 'assets/images/language_icon.png';
+    static const String deleteAccount = 'assets/images/delet_acc.png';
+
+    
+
 
   // Onboarding
   static const String onBoarding1 = 'assets/images/onboarding1.png';

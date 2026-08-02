@@ -92,6 +92,15 @@ class AppRoutes {
         path: AppRoutesNames.services,
         builder: (context, state) => const ServicesScreen(),
       ),
+    
+GoRoute(
+  name: AppRoutesNames.professionalDetails,
+  path: AppRoutesNames.professionalDetails,
+  builder: (context, state) {
+    final professional = state.extra as ProfessionalEntity;
+    return ProfessionalDetailsScreen(professional: professional);
+  },
+),
       GoRoute(
         name: AppRoutesNames.serviceDetails,
         path: AppRoutesNames.serviceDetails,

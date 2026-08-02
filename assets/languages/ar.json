@@ -123,7 +123,6 @@
     "submit":"تأكيد",
   "arabic_language": "اللغة العربية",
   "english_language": "اللغة الإنجليزية",
-
   "delete_account_confirm_title": "هل تريد حذف حسابك؟",
   "delete_account_confirm_message": "سيؤدي هذا إلى فقدان الوصول لجميع الخدمات والبيانات المرتبطة به",
   "email_error_empty": "البريد الإلكتروني مطلوب",
@@ -173,7 +172,17 @@
   "about": "حول",
   "experience": "الخبرة",
   "serviceArea": "منطقة الخدمة",
-  "jobs":"الوظائف"
-  
+  "jobs":"الوظائف",
+  "perHour":"/ساعة",
+  "no_reviews":"لا توجد مراجعات بعد",
+  "no_favorites":"لا توجد مفضلات بعد",
+  "no_orders":"لا توجد طلبات بعد",
+  "no_services":"لا توجد خدمات بعد",
+  "no_data":"لا توجد بيانات بعد",
+  "failedToLoadFavorites":"فشل في تحميل المفضلة",
+  "failedToLoadOrders":"فشل في تحميل الطلبات",
+  "failedToLoadServices":"فشل في تحميل الخدمات",
+  "tap_to_favorite": "اضغط لإضافة إلى المفضلة",
+  "tap_to_unfavorite": "اضغط لإزالة من المفضلة"
 }
 

@@ -84,6 +84,17 @@ static String get next => "next".trans;
   static String get bookNow => "book_now".trans;
   static String get categories => "categories".trans;
   static String get nearbyProfessionals => "nearby_professionals".trans;
+  static String get failedToLoadFavorites=>"failed_to_loadFavorites".trans;
+  static String get failedToLoadOrders=>"failed_to_loadOrders".trans;
+  static String get failedToLoadServices=>"failed_to_loadServices".trans;
+  static String get noFavorites=>"no_favorites".trans;
+  static String get noOrders=>"no_orders".trans;
+  static String get noServices=>"no_services".trans;
+  static String get noData=>"no_data".trans;
+  static String get perHour=>"per_hour".trans;
+  static String get tapToFavorite => "tap_to_favorite".trans;
+  static String get tapToUnfavorite => "tap_to_unfavorite".trans;
+  static String get tapTheHeartIconOnAnyProfessionalOrServiceToAddThemTOYourFav => "tap_the_heart_icon".trans;
 
   // Service categories
   static String get plumbing => "plumbing".trans;

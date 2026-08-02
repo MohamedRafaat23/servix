@@ -24,4 +24,5 @@ static const String otpScreen = '/otp_screen/:flow';
   static const String notifications = '/notifications';
   static const String services = '/services';
   static const String serviceDetails = '/service_details';
+  static const String professionalDetails = '/professional_details';
 }

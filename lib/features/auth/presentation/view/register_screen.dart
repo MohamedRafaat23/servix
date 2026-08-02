@@ -216,7 +216,7 @@ class RegisterScreen extends StatelessWidget {
                                 ),
                                 TextButton(
                                   onPressed: () {
-                                    context.pop();
+                                    context.goNamed(AppRoutesNames.login);
                                   },
                                   child: Text(
                                     AppStrings.login,

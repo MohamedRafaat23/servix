@@ -64,17 +64,17 @@ class NavbarScreen extends StatelessWidget {
                 padding: EdgeInsets.only(
                   left: 20.width,
                   right: 20.width,
-                  bottom: 12.height,
+                  bottom: 10.height,
                 ),
                 child: Container(
                   height: context.byDevice(
-                    mobilePortrait: 100.height,
-                    mobileLandscape: 92.height,
-                    tablet: 106.height,
+                    mobilePortrait: 96.height,
+                    mobileLandscape: 88.height,
+                    tablet: 100.height,
                   ),
                   padding: EdgeInsets.symmetric(
                     horizontal: 16.width,
-                    vertical: 8.height,
+                    vertical: 4.height,
                   ),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: .88),

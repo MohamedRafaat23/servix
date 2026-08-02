@@ -5,6 +5,7 @@ import 'package:servix/config/router/app_routes_names.dart';
 import 'package:servix/core/di/service_locator.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
+import 'package:servix/core/widgets/app_background.dart';
 import 'package:servix/features/home/domain/entites/category_entity.dart';
 import 'package:servix/features/home/presentaion/bloc/home_bloc.dart';
 import 'package:servix/features/home/presentaion/bloc/home_event.dart';
@@ -22,74 +23,103 @@ class ServiceDetailsScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => sl<HomeBloc>()..add(const HomeStarted()),
       child: Scaffold(
+        backgroundColor: Colors.transparent,
         appBar: AppBar(
-          title: Text(category.name),
+          title: Text(
+            category.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
           centerTitle: true,
-          backgroundColor: Colors.white,
+          backgroundColor: Colors.transparent,
           elevation: 0,
           foregroundColor: Colors.black,
         ),
-        body: SafeArea(
-          child: BlocBuilder<HomeBloc, HomeState>(
-            builder: (context, state) {
-              if (state.status == HomeStatus.loading || state.status == HomeStatus.initial) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              if (state.status == HomeStatus.failure) {
-                return Center(child: Text(state.errorMessage ?? AppStrings.somethingWentWrong));
-              }
+        extendBodyBehindAppBar: true,
+        body: AppBackground(
+          child: SafeArea(
+            child: BlocBuilder<HomeBloc, HomeState>(
+              builder: (context, state) {
+                if (state.status == HomeStatus.loading || state.status == HomeStatus.initial) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (state.status == HomeStatus.failure) {
+                  return Center(child: Text(state.errorMessage ?? AppStrings.somethingWentWrong));
+                }
 
-              final filteredProfessionals = state.professionals.where((professional) {
-                final query = state.searchQuery.toLowerCase();
-                return query.isEmpty ||
-                    professional.name.toLowerCase().contains(query) ||
-                    professional.profession.toLowerCase().contains(query);
-              }).toList();
+                final filteredProfessionals = state.professionals.where((professional) {
+                  final query = state.searchQuery.toLowerCase();
+                  return query.isEmpty ||
+                      professional.name.toLowerCase().contains(query) ||
+                      professional.profession.toLowerCase().contains(query);
+                }).toList();
 
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: context.responsiveHorizontalPadding),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(height: 16.height),
-                    SearchWidget(
-                      hintText: AppStrings.searchProfessionals,
-                      icon: Icons.search,
-                      onChanged: (value) {
-                        context.read<HomeBloc>().add(HomeSearchQueryChanged(value));
-                      },
-                    ),
-                    SizedBox(height: 16.height),
-                    Text(
-                      AppStrings.topProfessionals.replaceFirst('\$category.name', category.name),
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: context.responsiveFontScale(18),
+                return Center(
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: context.byDevice(
+                        mobilePortrait: double.infinity,
+                        mobileLandscape: 700.width,
+                        tablet: 900.width,
                       ),
                     ),
-                    SizedBox(height: 10.height),
-                    Expanded(
-                      child: ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: filteredProfessionals.length,
-                        separatorBuilder: (_, __) => SizedBox(height: 12.height),
-                        itemBuilder: (context, index) {
-                          return ProfessionalCard(
-                            professional: filteredProfessionals[index],
-                            onTap: () {
-                              context.goNamed(
-                                AppRoutesNames.serviceDetails,
-                                extra: filteredProfessionals[index],
-                              );
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: context.responsiveHorizontalPadding),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(height: 16.height),
+                          SearchWidget(
+                            hintText: AppStrings.searchProfessionals,
+                            icon: Icons.search,
+                            onChanged: (value) {
+                              context.read<HomeBloc>().add(HomeSearchQueryChanged(value));
                             },
-                          );
-                        },
+                          ),
+                          SizedBox(height: 16.height),
+                          Text(
+                            AppStrings.topProfessionals.replaceFirst('\$category.name', category.name),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: context.responsiveFontScale(18),
+                            ),
+                          ),
+                          SizedBox(height: 10.height),
+                          Expanded(
+                            child: filteredProfessionals.isEmpty
+                                ? Center(
+                                    child: Text(
+                                      AppStrings.somethingWentWrong,
+                                      style: TextStyle(fontSize: context.responsiveFontScale(14)),
+                                    ),
+                                  )
+                                : ListView.separated(
+                                    physics: const BouncingScrollPhysics(),
+                                    itemCount: filteredProfessionals.length,
+                                    separatorBuilder: (_, __) => SizedBox(height: 12.height),
+                                    itemBuilder: (context, index) {
+                                      return ProfessionalCard(
+                                        professional: filteredProfessionals[index],
+                                        onTap: () {
+                                          context.pushNamed(
+                                            AppRoutesNames.professionalDetails, // ← كانت serviceDetails غلط
+                                            extra: filteredProfessionals[index],
+                                          );
+                                        },
+                                      );
+                                    },
+                                  ),
+                          ),
+                          SizedBox(height: 12.height),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              );
-            },
+                  ),
+                );
+              },
+            ),
           ),
         ),
       ),

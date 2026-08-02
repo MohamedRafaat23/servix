@@ -165,5 +165,17 @@
   "about": "About",
   "experience": "Experience",
   "serviceArea": "Service Area",
-  "jobs":"jops"
+  "jobs":"jops",
+  "reviews":"Reviews",
+  "no_reviews":"No reviews yet",
+  "no_favorites":"No favorites yet",
+  "no_orders":"No orders yet",
+  "no_services":"No services yet",
+  "no_data":"No data yet",
+  "failedToLoadFavorites":"Failed to load favorites",
+  "failedToLoadOrders":"Failed to load orders",
+  "failedToLoadServices":"Failed to load services",
+  "perHour":"/Hour",
+  "tap_to_favorite": "Tap to add to favorites",
+  "tap_to_unfavorite": "Tap to remove from favorites"
 }

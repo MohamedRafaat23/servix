@@ -25,10 +25,12 @@ import 'package:servix/features/auth/domain/usecases/register_usecase.dart';
 import 'package:servix/features/auth/domain/usecases/reset_password_usecase.dart';
 import 'package:servix/features/auth/domain/usecases/resend_otp_usecase.dart';
 import 'package:servix/features/auth/domain/usecases/verify_otp_usecase.dart';
+import 'package:servix/features/auth/domain/usecases/check_auth_status_usecase.dart';
 
 import 'package:servix/features/auth/presentation/bloc/forget_password_bloc/forgetpassword_bloc.dart';
 import 'package:servix/features/auth/presentation/bloc/login_bloc/login_bloc.dart';
 import 'package:servix/features/auth/presentation/bloc/register_bloc/register_bloc.dart';
+import 'package:servix/features/favorite/presentaion/bloc/favorite_event.dart';
 import 'package:servix/features/home/data/repositories/facke_home_repository.dart';
 import 'package:servix/features/home/domain/repositories/home_repository.dart';
 import 'package:servix/features/home/domain/usecases/get_banners_usecase.dart';
@@ -37,7 +39,24 @@ import 'package:servix/features/home/domain/usecases/get_nearby_professionals_us
 import 'package:servix/features/home/presentaion/bloc/home_bloc.dart';
 import 'package:servix/features/navbar/presentation/bloc/navbar_bloc.dart';
 import 'package:servix/features/onboarding/presentation/bloc/onboarding_bloc.dart';
-import 'package:servix/features/auth/domain/usecases/check_auth_status_usecase.dart';
+import 'package:servix/features/favorite/data/repositories/fake_favorite_repository.dart';
+import 'package:servix/features/favorite/domain/repositories/favorite_repository.dart';
+import 'package:servix/features/favorite/domain/usecases/get_favorites_usecase.dart';
+import 'package:servix/features/favorite/domain/usecases/toggle_favorite_usecase.dart';
+import 'package:servix/features/favorite/presentaion/bloc/favorite_bloc.dart';
+import 'package:servix/features/profile/data/repositories/fake_profile_repository.dart';
+import 'package:servix/features/profile/domain/repositories/profile_repository.dart';
+import 'package:servix/features/profile/domain/usecases/change_password_usecase.dart';
+import 'package:servix/features/profile/domain/usecases/get_profile_usecase.dart';
+import 'package:servix/features/profile/domain/usecases/manage_addresses_usecase.dart';
+import 'package:servix/features/profile/domain/usecases/update_profile_usecase.dart';
+import 'package:servix/features/profile/presentaion/bloc/profile_bloc.dart';
+import 'package:servix/features/order/data/repositories/fake_order_repository.dart';
+import 'package:servix/features/order/domain/repositories/order_repository.dart';
+import 'package:servix/features/order/domain/usecases/get_order_details_usecase.dart';
+import 'package:servix/features/order/domain/usecases/get_orders_usecase.dart';
+import 'package:servix/features/order/domain/usecases/reorder_usecase.dart';
+import 'package:servix/features/order/presentaion/bloc/order_bloc.dart';
 import 'package:servix/features/splash/presentation/splash_bloc/splash_bloc.dart';
 
 final sl = GetIt.instance;
@@ -138,7 +157,10 @@ Future<void> initServiceLocator() async {
     () => CheckAuthStatusUseCase(sl<AuthRepository>()),
   );
   sl.registerFactory<SplashBloc>(
-    () => SplashBloc(sl<CheckAuthStatusUseCase>()),
+    () => SplashBloc(
+      sl<CheckAuthStatusUseCase>(),
+      sl<PreferenceUtils>(),
+    ),
   );
   sl.registerFactory<NavbarBloc>(() => NavbarBloc());
 
@@ -161,6 +183,90 @@ Future<void> initServiceLocator() async {
       sl<GetCategoriesUseCase>(),
       sl<GetNearbyProfessionalsUseCase>(),
       sl<GetBannersUseCase>(),
+    ),
+  );
+
+  // Favorite Feature
+  sl.registerLazySingleton<FavoriteRepository>(
+    () => FakeFavoriteRepository(),
+  );
+
+  sl.registerLazySingleton<GetFavoritesUseCase>(
+    () => GetFavoritesUseCase(sl<FavoriteRepository>()),
+  );
+
+  sl.registerLazySingleton<ToggleFavoriteUseCase>(
+    () => ToggleFavoriteUseCase(sl<FavoriteRepository>()),
+  );
+
+  sl.registerLazySingleton<FavoriteBloc>(
+  () => FavoriteBloc(
+    getFavoritesUseCase: sl<GetFavoritesUseCase>(),
+    toggleFavoriteUseCase: sl<ToggleFavoriteUseCase>(),
+  )..add(const FavoritesFetchRequested()), 
+);
+
+  // Profile Feature
+  sl.registerLazySingleton<ProfileRepository>(
+    () => FakeProfileRepository(),
+  );
+
+  sl.registerLazySingleton<GetProfileUseCase>(
+    () => GetProfileUseCase(sl<ProfileRepository>()),
+  );
+
+  sl.registerLazySingleton<UpdateProfileUseCase>(
+    () => UpdateProfileUseCase(sl<ProfileRepository>()),
+  );
+
+  sl.registerLazySingleton<ChangePasswordUseCase>(
+    () => ChangePasswordUseCase(sl<ProfileRepository>()),
+  );
+
+  sl.registerLazySingleton<GetSavedAddressesUseCase>(
+    () => GetSavedAddressesUseCase(sl<ProfileRepository>()),
+  );
+
+  sl.registerLazySingleton<AddSavedAddressUseCase>(
+    () => AddSavedAddressUseCase(sl<ProfileRepository>()),
+  );
+
+  sl.registerLazySingleton<DeleteSavedAddressUseCase>(
+    () => DeleteSavedAddressUseCase(sl<ProfileRepository>()),
+  );
+
+  sl.registerFactory<ProfileBloc>(
+    () => ProfileBloc(
+      getProfileUseCase: sl<GetProfileUseCase>(),
+      updateProfileUseCase: sl<UpdateProfileUseCase>(),
+      changePasswordUseCase: sl<ChangePasswordUseCase>(),
+      addSavedAddressUseCase: sl<AddSavedAddressUseCase>(),
+      deleteSavedAddressUseCase: sl<DeleteSavedAddressUseCase>(),
+    ),
+  );
+
+  // Order Feature
+  sl.registerLazySingleton<OrderRepository>(
+    () => FakeOrderRepository(),
+  );
+
+  sl.registerLazySingleton<GetOrdersUseCase>(
+    () => GetOrdersUseCase(sl<OrderRepository>()),
+  );
+
+  sl.registerLazySingleton<GetOrderDetailsUseCase>(
+    () => GetOrderDetailsUseCase(sl<OrderRepository>()),
+  );
+
+  sl.registerLazySingleton<ReorderUseCase>(
+    () => ReorderUseCase(sl<OrderRepository>()),
+  );
+
+  sl.registerFactory<OrderBloc>(
+    () => OrderBloc(
+      getOrdersUseCase: sl<GetOrdersUseCase>(),
+      getOrderDetailsUseCase: sl<GetOrderDetailsUseCase>(),
+      reorderUseCase: sl<ReorderUseCase>(),
     ),
   );
 }

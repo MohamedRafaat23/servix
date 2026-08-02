@@ -17,35 +17,21 @@ class AppBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFFEAF3FC), // أزرق فاتح جدًا فوق
-            Color(0xFFF7FAFD), // يميل للأبيض تحت
-          ],
-        ),
-      ),
-      child: Stack(
-        children: [
-          if (showImageOverlay)
-            Positioned.fill(
-              child: Opacity(
-                opacity: 0,
-                child: Image.asset(
-                  color: AppColors.backgroundColor,
-                  AppImages.backgroundImage,
-                  fit: BoxFit.cover,
-                ),
+    return Stack(
+      children: [
+        if (showImageOverlay)
+          Positioned.fill(
+            child: Opacity(
+              opacity: 0,
+              child: Image.asset(
+                color: AppColors.backgroundColor,
+                AppImages.backgroundImage,
+                fit: BoxFit.cover,
               ),
             ),
-          child,
-        ],
-      ),
+          ),
+        child,
+      ],
     );
   }
 }

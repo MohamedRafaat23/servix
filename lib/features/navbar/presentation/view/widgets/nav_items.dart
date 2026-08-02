@@ -66,7 +66,7 @@ class NavItem extends StatelessWidget {
                 fontSize: context.responsiveFontScale(12),
                 fontWeight: FontWeight.w700,
               ),
-              child: Text(label),
+              child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis),
             ),
           ],
         ),

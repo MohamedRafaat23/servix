@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:servix/core/di/service_locator.dart';
 import 'package:servix/core/utils/constants/app_images.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
+import 'package:servix/features/favorite/presentaion/bloc/favorite_bloc.dart';
+import 'package:servix/features/favorite/presentaion/bloc/favorite_event.dart';
+import 'package:servix/features/favorite/presentaion/bloc/favorite_state.dart';
+import 'package:servix/features/home/domain/entites/booking_args.dart';
 import 'package:servix/features/home/domain/entites/professional_entity.dart';
+import 'package:servix/features/home/presentaion/view/booking/select_location_screen.dart';
 
 import 'widgets/professional_about_section.dart';
 import 'widgets/professional_bottom_bar.dart';
@@ -25,7 +32,8 @@ class ProfessionalDetailsScreen extends StatelessWidget {
     ];
 
     final skillsList = professional.skills ?? defaultSkills;
-    final aboutText = professional.about ??
+    final aboutText =
+        professional.about ??
         '${professional.name.split(' ').first} has served the Brooklyn area for over ${professional.experiance} years, specializing in ${professional.profession.toLowerCase()} with a focus on residential jobs. Fully licensed, insured, and background-checked.';
 
     return Scaffold(
@@ -47,10 +55,22 @@ class ProfessionalDetailsScreen extends StatelessWidget {
           ),
         ),
         actions: [
-          IconButton(
-            icon: const Icon(Icons.favorite, color: Color(0xFFEF4444)),
-            onPressed: () {},
+          BlocBuilder<FavoriteBloc, FavoriteState>(
+            bloc: sl<FavoriteBloc>(),
+            builder: (context, state) {
+              final isFav = state.favorites.any((p) => p.id == professional.id);
+              return IconButton(
+                icon: Icon(
+                  isFav ? Icons.favorite : Icons.favorite_border,
+                  color: const Color(0xFFEF4444),
+                ),
+                onPressed: () {
+                  sl<FavoriteBloc>().add(FavoriteToggleRequested(professional));
+                },
+              );
+            },
           ),
+
           IconButton(
             icon: const Icon(Icons.share_outlined, color: Color(0xFF334155)),
             onPressed: () {},
@@ -65,7 +85,7 @@ class ProfessionalDetailsScreen extends StatelessWidget {
               child: Image.asset(
                 AppImages.backgroundImage,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => const SizedBox.shrink(),
+                errorBuilder: (_, _, _) => const SizedBox.shrink(),
               ),
             ),
           ),
@@ -96,7 +116,16 @@ class ProfessionalDetailsScreen extends StatelessWidget {
       bottomSheet: ProfessionalBottomBar(
         pricePerHour: professional.pricePerHour,
         onCallTap: () {},
-        onBookTap: () {},
+        onBookTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => SelectLocationScreen(
+                args: BookingArgs(professional: professional),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

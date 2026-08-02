@@ -22,13 +22,15 @@ class SplashScreen extends StatelessWidget {
           if (state.status == SplashStatus.authenticated) {
             RouterHandler.navigate(
               context,
-              AppRoutesNames.login,
+              AppRoutesNames.navbar,
               routerType: RouterType.goAndPopAll,
             );
           } else if (state.status == SplashStatus.unauthenticated) {
             RouterHandler.navigate(
               context,
-              AppRoutesNames.onBoarding,
+              state.hasSeenOnboarding
+                  ? AppRoutesNames.login
+                  : AppRoutesNames.onBoarding,
               routerType: RouterType.goAndPopAll,
             );
           }
