@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
 import 'package:servix/features/profile/presentaion/bloc/profile_bloc.dart';
@@ -41,7 +42,7 @@ class SavedAddressesScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          'Saved Addresses',
+          AppStrings.savedAddresses,
           style: TextStyle(
             fontSize: context.responsiveFontScale(18),
             fontWeight: FontWeight.bold,

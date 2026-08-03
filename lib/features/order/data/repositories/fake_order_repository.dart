@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:servix/core/errors/failure.dart';
 import 'package:servix/core/utils/constants/app_images.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
 import 'package:servix/features/order/domain/repositories/order_repository.dart';
 
@@ -115,7 +116,7 @@ class FakeOrderRepository implements OrderRepository {
       final order = _orders.firstWhere((o) => o.id == id);
       return Right(order);
     } catch (_) {
-      return Left(ServerFailure('Order not found'));
+      return Left(ServerFailure(AppStrings.ordernoyfound));
     }
   }
 
@@ -159,18 +160,18 @@ class FakeOrderRepository implements OrderRepository {
         rating: old.rating,
         jobsCount: old.jobsCount,
         status: OrderStatusType.pending,
-        date: 'Today',
+        date: AppStrings.date,
         time: '10:00 AM',
         address: old.address,
         serviceName: old.serviceName,
         baseRate: old.baseRate,
         serviceFee: old.serviceFee,
-        timelineSteps: const [
-          OrderTimelineStepEntity(stepNumber: 1, title: 'Booking Confirmed', timeOrStatus: 'Just now', isCompleted: true),
-          OrderTimelineStepEntity(stepNumber: 2, title: 'On The Way', timeOrStatus: 'Pending', isCompleted: false, isCurrent: true),
-          OrderTimelineStepEntity(stepNumber: 3, title: 'Arrived', timeOrStatus: 'Pending', isCompleted: false),
-          OrderTimelineStepEntity(stepNumber: 4, title: 'start Worked', timeOrStatus: 'Pending', isCompleted: false),
-          OrderTimelineStepEntity(stepNumber: 5, title: 'Payment', timeOrStatus: 'Pending', isCompleted: false),
+        timelineSteps:  [
+          OrderTimelineStepEntity(stepNumber: 1, title: AppStrings.bookingConfirmed, timeOrStatus: 'Just now', isCompleted: true),
+          OrderTimelineStepEntity(stepNumber: 2, title: AppStrings.onTheWay, timeOrStatus: 'Pending', isCompleted: false, isCurrent: true),
+          OrderTimelineStepEntity(stepNumber: 3, title: AppStrings.arrived, timeOrStatus: 'Pending', isCompleted: false),
+          OrderTimelineStepEntity(stepNumber: 4, title: AppStrings.startWorked, timeOrStatus: 'Pending', isCompleted: false),
+          OrderTimelineStepEntity(stepNumber: 5, title: AppStrings.payment, timeOrStatus: 'Pending', isCompleted: false),
         ],
       );
       _orders.insert(0, newOrder);

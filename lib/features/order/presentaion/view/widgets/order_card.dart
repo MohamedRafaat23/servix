@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
 import 'order_status_badge.dart';
@@ -110,7 +111,7 @@ class OrderCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Date',
+                  AppStrings.date,
                   style: TextStyle(
                     fontSize: context.responsiveFontScale(12),
                     color: AppColors.greyColor,
@@ -131,7 +132,7 @@ class OrderCard extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  'Address',
+                  AppStrings.address,
                   style: TextStyle(
                     fontSize: context.responsiveFontScale(12),
                     color: AppColors.greyColor,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'section_header_with_icon.dart';
 
@@ -13,9 +14,9 @@ class ProfessionalSkillsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const SectionHeaderWithIcon(
+         SectionHeaderWithIcon(
           icon: Icons.lightbulb_outline,
-          title: 'Skills',
+          title: AppStrings.skills,
         ),
         SizedBox(height: 10.height),
         Wrap(

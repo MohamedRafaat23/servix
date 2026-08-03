@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
 
@@ -16,10 +17,10 @@ class OrderFilterChips extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final filters = <(String label, OrderStatusType? type)>[
-      ('All', null),
-      ('Pending', OrderStatusType.pending),
-      ('Completed', OrderStatusType.completed),
-      ('Cancelled', OrderStatusType.cancelled),
+      (AppStrings.all, null),
+      (AppStrings.pending, OrderStatusType.pending),
+      (AppStrings.completed, OrderStatusType.completed),
+      (AppStrings.cancelled, OrderStatusType.cancelled),
     ];
 
     return SizedBox(

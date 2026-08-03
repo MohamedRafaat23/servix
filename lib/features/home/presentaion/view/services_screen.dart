@@ -20,6 +20,7 @@ class ServicesScreen extends StatelessWidget {
       create: (_) => sl<HomeBloc>()..add(const HomeStarted()),
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.transparent,
           title: Text(AppStrings.services),
           centerTitle: true,
           elevation: 0,
@@ -70,7 +71,7 @@ class ServicesScreen extends StatelessWidget {
                                 ),
                                 mainAxisSpacing: 12,
                                 crossAxisSpacing: 12,
-                                childAspectRatio: 1.05,
+                                childAspectRatio: 1.5,
                               ),
                               itemBuilder: (context, index) {
                                 final category = state.categories[index];

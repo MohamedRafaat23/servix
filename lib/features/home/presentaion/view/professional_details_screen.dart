@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/di/service_locator.dart';
 import 'package:servix/core/utils/constants/app_images.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/favorite/presentaion/bloc/favorite_bloc.dart';
 import 'package:servix/features/favorite/presentaion/bloc/favorite_event.dart';
@@ -39,6 +40,7 @@ class ProfessionalDetailsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFEBF3FA),
       appBar: AppBar(
+      backgroundColor: const Color(0xFFEBF3FA),
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
@@ -46,7 +48,7 @@ class ProfessionalDetailsScreen extends StatelessWidget {
           onPressed: () => Navigator.maybePop(context),
         ),
         title: Text(
-          'Profile',
+          AppStrings.profile,
           style: TextStyle(
             fontSize: context.responsiveFontScale(18),
             fontWeight: FontWeight.bold,

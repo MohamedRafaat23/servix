@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
 
@@ -10,9 +11,9 @@ class OrderStatusBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final (label, color) = switch (status) {
-      OrderStatusType.pending => ('Pending', const Color(0xFFF97316)),
-      OrderStatusType.completed => ('Completed', const Color(0xFF22C55E)),
-      OrderStatusType.cancelled => ('Cancelled', const Color(0xFFEF4444)),
+      OrderStatusType.pending => (AppStrings.pending, const Color(0xFFF97316)),
+      OrderStatusType.completed => (AppStrings.completed, const Color(0xFF22C55E)),
+      OrderStatusType.cancelled => (AppStrings.cancelled, const Color(0xFFEF4444)),
     };
 
     return Row(

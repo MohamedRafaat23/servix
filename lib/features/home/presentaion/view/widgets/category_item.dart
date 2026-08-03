@@ -16,19 +16,24 @@ class CategoryItem extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 16.height),
+        width: double.infinity,
+        padding: EdgeInsets.symmetric(vertical: 10.height, horizontal: 6.width),
         decoration: BoxDecoration(
           color: const Color(0xFFF5F7FA),
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(category.imageAsset, width: 36.width, height: 36.width),
-            SizedBox(height: 8.height),
+            Image.asset(category.imageAsset, width: 32.width, height: 32.width),
+            SizedBox(height: 6.height),
             Text(
               category.name,
+              textAlign: TextAlign.center,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontSize: context.responsiveFontScale(13),
+                fontSize: context.responsiveFontScale(11),
                 fontWeight: FontWeight.w600,
                 color: AppColors.textColor,
               ),

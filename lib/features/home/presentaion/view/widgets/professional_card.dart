@@ -1,6 +1,7 @@
 // lib/features/home/presentation/view/widgets/professional_card.dart
 import 'package:flutter/material.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/home/domain/entites/professional_entity.dart';
 

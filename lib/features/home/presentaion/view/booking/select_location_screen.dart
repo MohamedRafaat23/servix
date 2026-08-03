@@ -1,54 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/home/domain/entites/booking_args.dart';
+import 'package:servix/features/home/presentaion/bloc/booking_bloc.dart';
+import 'package:servix/features/home/presentaion/bloc/booking_event.dart';
+import 'package:servix/features/home/presentaion/bloc/booking_state.dart';
 import 'booking_scaffold.dart';
 import 'choose_appointment_screen.dart';
 
 // ignore: unused_element
 
-class SelectLocationScreen extends StatefulWidget {
+class SelectLocationScreen extends StatelessWidget {
   final BookingArgs args;
 
   const SelectLocationScreen({super.key, required this.args});
 
-  @override
-  State<SelectLocationScreen> createState() => _SelectLocationScreenState();
-}
-
-class _SelectLocationScreenState extends State<SelectLocationScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  final List<String> _addedAreas = ['Olaya District - Riyadh'];
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  void _showAddAddressSheet(BuildContext context) {
+  void _showAddAddressSheet(BuildContext context, ValueSetter<String> onAdd) {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _AddAddressSheet(
-        onAdd: (address) {
-          setState(() {
-            _addedAreas.add(address);
-          });
-        },
-      ),
+      builder: (_) => _AddAddressSheet(onAdd: onAdd),
     );
   }
 
-  void _removeArea(int index) {
-    setState(() {
-      _addedAreas.removeAt(index);
-    });
-  }
-
-  void _onNext() {
-    if (_addedAreas.isEmpty) {
+  void _onNext(BuildContext context, BookingState state) {
+    if (state.addedAddresses.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please add at least one address')),
       );
@@ -57,8 +35,11 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ChooseAppointmentScreen(
-          args: widget.args.copyWith(selectedAddresses: _addedAreas),
+        builder: (_) => BlocProvider.value(
+          value: context.read<BookingBloc>(),
+          child: ChooseAppointmentScreen(
+            args: args.copyWith(selectedAddresses: state.addedAddresses),
+          ),
         ),
       ),
     );
@@ -66,10 +47,52 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => BookingBloc(),
+      child: BlocBuilder<BookingBloc, BookingState>(
+        builder: (context, state) {
+          return _SelectLocationScreenContent(
+            state: state,
+            onNext: () => _onNext(context, state),
+            onShowAddAddressSheet: (onAdd) => _showAddAddressSheet(context, onAdd),
+            onAddAddress: (address) => context.read<BookingBloc>().add(BookingAddressAdded(address)),
+            onRemoveAddress: (index) => context.read<BookingBloc>().add(BookingAddressRemoved(index)),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class _SelectLocationScreenContent extends StatelessWidget {
+  final BookingState state;
+  final VoidCallback onNext;
+  final ValueChanged<ValueSetter<String>> onShowAddAddressSheet;
+  final ValueChanged<String> onAddAddress;
+  final ValueChanged<int> onRemoveAddress;
+
+  const _SelectLocationScreenContent({
+    required this.state,
+    required this.onNext,
+    required this.onShowAddAddressSheet,
+    required this.onAddAddress,
+    required this.onRemoveAddress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final TextEditingController searchController = TextEditingController();
+
+    void showAddAddressSheet() {
+      onShowAddAddressSheet((address) {
+        onAddAddress(address);
+      });
+    }
+
     return BookingScaffold(
       currentStep: 1,
       buttonLabel: 'Next',
-      onNext: _onNext,
+      onNext: onNext,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +196,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
                           SizedBox(width: 8.width),
                           Expanded(
                             child: TextField(
-                              controller: _searchController,
+                              controller: searchController,
                               decoration: InputDecoration(
                                 hintText: 'Search for an address',
                                 hintStyle: TextStyle(
@@ -208,19 +231,19 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
                     ),
                   ),
                   SizedBox(height: 12.height),
-                  ..._addedAreas.asMap().entries.map(
+                  ...state.addedAddresses.asMap().entries.map(
                     (entry) => Padding(
                       padding: EdgeInsets.only(bottom: 10.height),
                       child: _AreaChip(
                         address: entry.value,
-                        onRemove: () => _removeArea(entry.key),
+                        onRemove: () => onRemoveAddress(entry.key),
                       ),
                     ),
                   ),
                   SizedBox(height: 8.height),
                   // Add new address button
                   GestureDetector(
-                    onTap: () => _showAddAddressSheet(context),
+                    onTap: showAddAddressSheet,
                     child: Container(
                       width: double.infinity,
                       padding: EdgeInsets.symmetric(vertical: 14.height),

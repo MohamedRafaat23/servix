@@ -76,7 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         SizedBox(height: 16.height),
                         //search
                         SearchWidget(
-                          hintText: 'search plumbers, cleaners...',
+                          hintText: AppStrings.searchProfessionals,
                           icon: Icons.search,
                           onChanged: (value) {
                             context.read<HomeBloc>().add(
@@ -89,8 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         PromoBannerCarousel(onBookNow: (banner) {}),
                         SizedBox(height: 24.height),
                         SectionHeader(
-                          title: 'categorise',
-                          onSeeAll: () {
+                          title: AppStrings.categories,
+                            onSeeAll: () {
                             context.pushNamed(
                               AppRoutesNames.services,
                             ); 
@@ -139,7 +139,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         SizedBox(height: 24.height),
                         SectionHeader(
-                          title: 'Nearby professionals',
+                          title: AppStrings.topProfessionals,
                           onSeeAll: () {},
                         ),
                         SizedBox(height: 12.height),

@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/home/domain/entites/booking_args.dart';
+import 'package:servix/features/home/presentaion/bloc/booking_bloc.dart';
+import 'package:servix/features/home/presentaion/bloc/booking_event.dart';
+import 'package:servix/features/home/presentaion/bloc/booking_state.dart';
 import 'booking_scaffold.dart';
 import 'confirm_booking_screen.dart';
 
-class ChooseAppointmentScreen extends StatefulWidget {
-  final BookingArgs args;
-
-  const ChooseAppointmentScreen({super.key, required this.args});
-
-  @override
-  State<ChooseAppointmentScreen> createState() => _ChooseAppointmentScreenState();
+// top-level helper - متاحة لأي كلاس في الملف
+String weekdayAbbr(int w) {
+  const abbrs = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  return abbrs[w - 1];
 }
 
-class _ChooseAppointmentScreenState extends State<ChooseAppointmentScreen> {
-  late DateTime _focusedMonth;
-  late DateTime _selectedDate;
-  String? _selectedTime;
+class ChooseAppointmentScreen extends StatelessWidget {
+  final BookingArgs args;
 
   static const List<String> _timeSlots = [
     '9:00 AM', '10:00 AM', '11:00 AM',
@@ -25,16 +24,11 @@ class _ChooseAppointmentScreenState extends State<ChooseAppointmentScreen> {
     '4:00 PM', '5:00 PM', '6:00 PM',
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _focusedMonth = DateTime.now();
-    _selectedDate = DateTime.now();
-    _selectedTime = '10:00 AM';
-  }
+  const ChooseAppointmentScreen({super.key, required this.args});
 
-  void _onNext() {
-    if (_selectedTime == null) {
+  void _onNext(BuildContext context, BookingState state) {
+    final selectedTime = state.selectedTime;
+    if (selectedTime == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please select a time slot')),
       );
@@ -43,10 +37,13 @@ class _ChooseAppointmentScreenState extends State<ChooseAppointmentScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => ConfirmBookingScreen(
-          args: widget.args.copyWith(
-            selectedDate: _selectedDate,
-            selectedTime: _selectedTime,
+        builder: (_) => BlocProvider.value(
+          value: context.read<BookingBloc>(),
+          child: ConfirmBookingScreen(
+            args: args.copyWith(
+              selectedDate: state.selectedDate,
+              selectedTime: selectedTime,
+            ),
           ),
         ),
       ),
@@ -55,10 +52,44 @@ class _ChooseAppointmentScreenState extends State<ChooseAppointmentScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return BlocBuilder<BookingBloc, BookingState>(
+      builder: (context, state) {
+        return _ChooseAppointmentScreenContent(
+          args: args,
+          state: state,
+          onNext: () => _onNext(context, state),
+          onMonthChanged: (month) => context.read<BookingBloc>().add(BookingMonthChanged(month)),
+          onDateSelected: (date) => context.read<BookingBloc>().add(BookingDateSelected(date)),
+          onTimeSelected: (time) => context.read<BookingBloc>().add(BookingTimeSelected(time)),
+        );
+      },
+    );
+  }
+}
+
+class _ChooseAppointmentScreenContent extends StatelessWidget {
+  final BookingArgs args;
+  final BookingState state;
+  final VoidCallback onNext;
+  final ValueChanged<DateTime> onMonthChanged;
+  final ValueChanged<DateTime> onDateSelected;
+  final ValueChanged<String> onTimeSelected;
+
+  const _ChooseAppointmentScreenContent({
+    required this.args,
+    required this.state,
+    required this.onNext,
+    required this.onMonthChanged,
+    required this.onDateSelected,
+    required this.onTimeSelected,
+  });
+
+  @override
+  Widget build(BuildContext context) {
     return BookingScaffold(
       currentStep: 2,
       buttonLabel: 'Next',
-      onNext: _onNext,
+      onNext: onNext,
       body: SingleChildScrollView(
         padding: EdgeInsets.symmetric(horizontal: context.responsiveHorizontalPadding, vertical: 8.height),
         child: Column(
@@ -67,15 +98,11 @@ class _ChooseAppointmentScreenState extends State<ChooseAppointmentScreen> {
             _SectionTitle(title: 'Select Date'),
             SizedBox(height: 12.height),
             _DateSelector(
-              focusedMonth: _focusedMonth,
-              selectedDate: _selectedDate,
-              onPreviousMonth: () => setState(() {
-                _focusedMonth = DateTime(_focusedMonth.year, _focusedMonth.month - 1);
-              }),
-              onNextMonth: () => setState(() {
-                _focusedMonth = DateTime(_focusedMonth.year, _focusedMonth.month + 1);
-              }),
-              onDateSelected: (d) => setState(() => _selectedDate = d),
+              focusedMonth: state.focusedMonth,
+              selectedDate: state.selectedDate,
+              onPreviousMonth: () => onMonthChanged(DateTime(state.focusedMonth.year, state.focusedMonth.month - 1)),
+              onNextMonth: () => onMonthChanged(DateTime(state.focusedMonth.year, state.focusedMonth.month + 1)),
+              onDateSelected: onDateSelected,
             ),
             SizedBox(height: 24.height),
             _SectionTitle(title: 'Select Time'),
@@ -83,7 +110,7 @@ class _ChooseAppointmentScreenState extends State<ChooseAppointmentScreen> {
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemCount: _timeSlots.length,
+              itemCount: ChooseAppointmentScreen._timeSlots.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 2.8,
@@ -91,10 +118,10 @@ class _ChooseAppointmentScreenState extends State<ChooseAppointmentScreen> {
                 mainAxisSpacing: 10,
               ),
               itemBuilder: (_, i) {
-                final slot = _timeSlots[i];
-                final isSelected = slot == _selectedTime;
+                final slot = ChooseAppointmentScreen._timeSlots[i];
+                final isSelected = slot == state.selectedTime;
                 return GestureDetector(
-                  onTap: () => setState(() => _selectedTime = slot),
+                  onTap: () => onTimeSelected(slot),
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     decoration: BoxDecoration(
@@ -119,8 +146,7 @@ class _ChooseAppointmentScreenState extends State<ChooseAppointmentScreen> {
               },
             ),
             SizedBox(height: 20.height),
-            // Summary chip
-            if (_selectedTime != null)
+            if (state.selectedTime != null)
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.width, vertical: 12.height),
                 decoration: BoxDecoration(
@@ -134,7 +160,7 @@ class _ChooseAppointmentScreenState extends State<ChooseAppointmentScreen> {
                     SizedBox(width: 8.width),
                     Expanded(
                       child: Text(
-                        '${_selectedDate.day} ${_weekdayAbbr(_selectedDate.weekday)}, ${_selectedDate.year} - $_selectedTime',
+                        '${state.selectedDate.day} ${weekdayAbbr(state.selectedDate.weekday)}, ${state.selectedDate.year} - ${state.selectedTime}',
                         style: TextStyle(
                           fontSize: context.responsiveFontScale(13),
                           color: const Color(0xFF334155),
@@ -152,14 +178,9 @@ class _ChooseAppointmentScreenState extends State<ChooseAppointmentScreen> {
       ),
     );
   }
-
-  String _weekdayAbbr(int w) {
-    const abbrs = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-    return abbrs[w - 1];
-  }
 }
 
-// ── Section title ─────────────────────────────────────────────────────────────
+//  Section title
 
 class _SectionTitle extends StatelessWidget {
   final String title;
@@ -178,7 +199,7 @@ class _SectionTitle extends StatelessWidget {
   }
 }
 
-// ── Date selector row ─────────────────────────────────────────────────────────
+//  Date selector row
 
 class _DateSelector extends StatelessWidget {
   final DateTime focusedMonth;

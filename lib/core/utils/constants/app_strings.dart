@@ -17,6 +17,9 @@ class AppStrings {
   static String get connectionError => "connection_error".trans;
   static String get optional => "optional".trans;
   static String get unknownError => "unknownError".trans;
+  static String get date => "date".trans;
+  static String get time => "time".trans;
+  static String get ordernoyfound => "ordernoyfound".trans;
   //onbording
 static String get onBoardingTitle1 => "on_boarding_title_1".trans;
 static String get onBoardingTitle2 => "on_boarding_title_2".trans;
@@ -91,7 +94,7 @@ static String get next => "next".trans;
   static String get noOrders=>"no_orders".trans;
   static String get noServices=>"no_services".trans;
   static String get noData=>"no_data".trans;
-  static String get perHour=>"per_hour".trans;
+  static String get perHour => "perHour".trans;
   static String get tapToFavorite => "tap_to_favorite".trans;
   static String get tapToUnfavorite => "tap_to_unfavorite".trans;
   static String get tapTheHeartIconOnAnyProfessionalOrServiceToAddThemTOYourFav => "tap_the_heart_icon".trans;
@@ -114,7 +117,6 @@ static String get next => "next".trans;
   static String get details => "details".trans;
   static String get service => "service".trans;
   static String get address => "address".trans;
-  static String get date => "date".trans;
   static String get baseRate => "base_rate".trans;
   static String get serviceFee => "service_fee".trans;
   static String get total => "total".trans;
@@ -160,10 +162,15 @@ static String get next => "next".trans;
   static String get accountSection => "account_section".trans;
   static String get personalInformation => "personal_information".trans;
   static String get savedAddresses => "saved_addresses".trans;
-  static String get changePasswordLabel => "change_password".trans;
+  static String get changePassword => "change_password".trans;
   static String get settingsSection => "settings_section".trans;
   static String get language => "language".trans;
   static String get notifications => "notifications".trans;
+  static String get nightMode => "night_mode".trans;
+  static String get change => "change".trans;
+  static String get changeLanguageTo => "change_language_to".trans;
+  static String get chooseCountryHint => "choose_country_hint".trans;
+  static String get chooseCityHint => "choose_city_hint".trans;
 
   // Personal information screen
   static String get enterYourFullName => "enter_your_full_name".trans;
@@ -200,15 +207,31 @@ static String get next => "next".trans;
       "delete_account_confirm_title".trans;
   static String get deleteAccountConfirmMessage =>
       "delete_account_confirm_message".trans;
-
+  static String get deleteAccount =>
+      "delete_account".trans;
+  static String get termsAndPrivacy => "terms_and_privacy".trans;
+  static String get logout => "logout".trans;
+  static String get logoutConfirmMessage => "logout_confirm_message".trans;
+  static String get thisActionIsPermanentAndCannotBeUndoneAreYouSure =>
+      "this_action_is_permanent_and_cannot_be_undone_are_you_sure".trans;
    //services
    static String get services => "services".trans;
+      static String get skills => "skills".trans;
+
   static String get allservices => "all_services".trans;
   static String get topProfessionals => "top_professionals".trans;
-  static String get searchProfessionals => "searchProfessionals".trans;
+  static String get searchProfessionals => "searchProfessionals...".trans;
   static String get about => "about".trans;
   static String get reviews => "reviews".trans;
   static  String jobs = 'Jobs';
   static  String get experience => "Experience".trans;
   static  String get serviceArea => 'Service Area'.trans;
+  static  String get calling => 'Calling'.trans;
+  static  String get viewAll => 'View All'.trans;
+  static  String get noReviews => 'No Reviews'.trans;
+  static  String get noSkills => 'No Skills'.trans;
+  static  String get noAbout => 'No About'.trans;
+  static  String get oldpasswordIsRequired => 'Old password is required'.trans;
+  static  String get newpasswordIsRequired => 'New password is required'.trans;
+  
 }

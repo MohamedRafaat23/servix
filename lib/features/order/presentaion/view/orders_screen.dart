@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/di/service_locator.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
 import 'package:servix/features/order/presentaion/bloc/order_bloc.dart';
@@ -36,7 +37,7 @@ class _OrdersScreenBody extends StatelessWidget {
             children: [
               SizedBox(height: 16.height),
               Text(
-                'Orders',
+                AppStrings.orders,
                 style: TextStyle(
                   fontSize: context.responsiveFontScale(20),
                   fontWeight: FontWeight.bold,
@@ -65,7 +66,7 @@ class _OrdersScreenBody extends StatelessWidget {
                     if (state.status == OrderStatus.failure) {
                       return Center(
                         child: Text(
-                          state.errorMessage ?? 'Failed to load orders',
+                          state.errorMessage ?? AppStrings.failedToLoadOrders,
                           style: const TextStyle(color: Color(0xFFEF4444)),
                         ),
                       );
@@ -83,7 +84,7 @@ class _OrdersScreenBody extends StatelessWidget {
                             ),
                             SizedBox(height: 12.height),
                             Text(
-                              'No orders found',
+                              AppStrings.noOrders,
                               style: TextStyle(
                                 fontSize: context.responsiveFontScale(15),
                                 color: AppColors.greyColor,

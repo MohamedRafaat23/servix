@@ -9,6 +9,7 @@ class ProfileEntity extends Equatable {
   final List<String> savedAddresses;
   final bool notificationsEnabled;
   final bool nightModeEnabled;
+  final String? language; 
 
   const ProfileEntity({
     required this.id,
@@ -19,7 +20,9 @@ class ProfileEntity extends Equatable {
     this.savedAddresses = const [],
     this.notificationsEnabled = false,
     this.nightModeEnabled = true,
+    this.language
   });
+
 
   ProfileEntity copyWith({
     String? id,
@@ -27,6 +30,7 @@ class ProfileEntity extends Equatable {
     String? email,
     String? phone,
     String? avatarUrl,
+    String? language,
     List<String>? savedAddresses,
     bool? notificationsEnabled,
     bool? nightModeEnabled,
@@ -37,6 +41,7 @@ class ProfileEntity extends Equatable {
       email: email ?? this.email,
       phone: phone ?? this.phone,
       avatarUrl: avatarUrl ?? this.avatarUrl,
+      language: language ?? this.language,
       savedAddresses: savedAddresses ?? this.savedAddresses,
       notificationsEnabled: notificationsEnabled ?? this.notificationsEnabled,
       nightModeEnabled: nightModeEnabled ?? this.nightModeEnabled,
@@ -50,6 +55,7 @@ class ProfileEntity extends Equatable {
         email,
         phone,
         avatarUrl,
+        language,
         savedAddresses,
         notificationsEnabled,
         nightModeEnabled,

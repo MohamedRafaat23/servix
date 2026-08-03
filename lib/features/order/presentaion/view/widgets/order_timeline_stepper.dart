@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
 
@@ -12,12 +13,12 @@ class OrderTimelineStepper extends StatelessWidget {
   Widget build(BuildContext context) {
     final steps = order.timelineSteps.isNotEmpty
         ? order.timelineSteps
-        : const [
-            OrderTimelineStepEntity(stepNumber: 1, title: 'Booking Confirmed', timeOrStatus: '09:12 AM', isCompleted: true),
-            OrderTimelineStepEntity(stepNumber: 2, title: 'On The Way', timeOrStatus: '10:02 AM', isCompleted: true),
-            OrderTimelineStepEntity(stepNumber: 3, title: 'Arrived', timeOrStatus: '10:24 AM', isCompleted: true),
-            OrderTimelineStepEntity(stepNumber: 4, title: 'start Worked', timeOrStatus: 'Pending', isCompleted: false, isCurrent: true),
-            OrderTimelineStepEntity(stepNumber: 5, title: 'Payment', timeOrStatus: 'Pending', isCompleted: false),
+        :  [
+            OrderTimelineStepEntity(stepNumber: 1, title: AppStrings.bookingConfirmed, timeOrStatus: '09:12 AM', isCompleted: true),
+            OrderTimelineStepEntity(stepNumber: 2, title: AppStrings.onTheWay, timeOrStatus: '10:02 AM', isCompleted: true),
+            OrderTimelineStepEntity(stepNumber: 3, title: AppStrings.arrived, timeOrStatus: '10:24 AM', isCompleted: true),
+            OrderTimelineStepEntity(stepNumber: 4, title: AppStrings.startWorked, timeOrStatus: 'Pending', isCompleted: false, isCurrent: true),
+            OrderTimelineStepEntity(stepNumber: 5, title: AppStrings.payment, timeOrStatus: 'Pending', isCompleted: false),
           ];
 
     final isCancelled = order.status == OrderStatusType.cancelled;
@@ -26,7 +27,7 @@ class OrderTimelineStepper extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Order Status',
+          AppStrings.orderStatus,
           style: TextStyle(
             fontSize: context.responsiveFontScale(16),
             fontWeight: FontWeight.bold,

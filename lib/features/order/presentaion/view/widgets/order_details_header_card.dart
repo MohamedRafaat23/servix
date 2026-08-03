@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
 import 'order_status_badge.dart';
 
 class OrderDetailsHeaderCard extends StatelessWidget {
   final OrderEntity order;
-
   const OrderDetailsHeaderCard({super.key, required this.order});
 
   @override
@@ -58,7 +58,7 @@ class OrderDetailsHeaderCard extends StatelessWidget {
                     const Icon(Icons.star_rounded, color: Colors.amber, size: 14),
                     SizedBox(width: 3.width),
                     Text(
-                      '${order.rating} · ${order.jobsCount} Jobs',
+                      '${order.rating} · ${order.jobsCount} ${AppStrings.jobs}',
                       style: TextStyle(
                         fontSize: context.responsiveFontScale(12),
                         color: AppColors.greyColor,

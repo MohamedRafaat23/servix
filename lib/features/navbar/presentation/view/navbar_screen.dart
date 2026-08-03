@@ -46,7 +46,7 @@ class NavbarScreen extends StatelessWidget {
   static const List<String> _labelKeys = [
     'home',
     'orders',
-    'favorites',
+    'favorite',
     'profile',
   ];
 

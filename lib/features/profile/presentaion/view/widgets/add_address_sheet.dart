@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'map_grid_painter.dart';
 import 'sheet_dropdown.dart';
@@ -71,7 +72,7 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
               ),
             ),
             Text(
-              'Add New Address',
+              AppStrings.addNewAddress,
               style: TextStyle(
                 fontSize: context.responsiveFontScale(18),
                 fontWeight: FontWeight.bold,
@@ -121,7 +122,7 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
                             Icon(Icons.my_location, color: AppColors.lightPrimaryColor, size: 14.width),
                             SizedBox(width: 5.width),
                             Text(
-                              'Set Location In Map',
+                              AppStrings.setLocationInMap,
                               style: TextStyle(
                                 color: AppColors.lightPrimaryColor,
                                 fontSize: context.responsiveFontScale(12),
@@ -138,42 +139,42 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
             ),
             SizedBox(height: 16.height),
             SheetDropdown(
-              label: 'Country',
-              hint: 'choose country',
+              label: AppStrings.chooseCountry,
+              hint: AppStrings.chooseCountryHint,
               items: _countries,
               value: _country,
               onChanged: (v) => setState(() => _country = v),
             ),
             SizedBox(height: 12.height),
             SheetDropdown(
-              label: 'City',
-              hint: 'choose city',
+              label: AppStrings.chooseCity,
+              hint: AppStrings.chooseCityHint,
               items: _cities,
               value: _city,
               onChanged: (v) => setState(() => _city = v),
             ),
             SizedBox(height: 12.height),
-            SheetInput(label: 'Area', hint: 'write area', controller: _areaCtrl),
+            SheetInput(label: AppStrings.area, hint: AppStrings.writeArea, controller: _areaCtrl),
             SizedBox(height: 12.height),
-            SheetInput(label: 'Street Name', hint: 'write street', controller: _streetCtrl),
+            SheetInput(label: AppStrings.streetName, hint: AppStrings.writeStreetName, controller: _streetCtrl),
             SizedBox(height: 12.height),
             SheetInput(
-              label: 'Building Number',
-              hint: 'write building number',
+              label: AppStrings.buildingNumber,
+              hint: AppStrings.writeBuildingNumber,
               controller: _buildingCtrl,
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 12.height),
             SheetInput(
-              label: 'Floor Number',
-              hint: 'write floor number',
+              label: AppStrings.floorNumber,
+              hint: AppStrings.writeFloorNumber,
               controller: _floorCtrl,
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 12.height),
             SheetInput(
-              label: 'Apartment Number',
-              hint: 'write Apartment number',
+              label: AppStrings.apartmentNumber,
+              hint: AppStrings.writeApartmentNumber,
               controller: _apartmentCtrl,
               keyboardType: TextInputType.number,
             ),
@@ -189,7 +190,7 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.radius)),
                 ),
                 child: Text(
-                  'Save',
+                  AppStrings.save,
                   style: TextStyle(fontSize: context.responsiveFontScale(16), fontWeight: FontWeight.bold, color: Colors.white),
                 ),
               ),

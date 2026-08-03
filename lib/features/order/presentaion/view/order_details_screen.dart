@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
@@ -44,7 +45,7 @@ class OrderDetailsScreen extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
-            'Orders Deatils',
+            AppStrings.orderDetails,
             style: TextStyle(
               fontSize: context.responsiveFontScale(18),
               fontWeight: FontWeight.bold,
@@ -111,7 +112,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                     child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
                                   )
                                 : Text(
-                                    'Reorder',
+                                   AppStrings.reorder,
                                     style: TextStyle(
                                       fontSize: context.responsiveFontScale(16),
                                       fontWeight: FontWeight.bold,
@@ -125,7 +126,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           onPressed: () {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('Calling ${order.providerName}...'),
+                                content: Text('${AppStrings.calling} ${order.providerName}...'),
                                 backgroundColor: AppColors.lightPrimaryColor,
                                 behavior: SnackBarBehavior.floating,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -134,7 +135,7 @@ class OrderDetailsScreen extends StatelessWidget {
                           },
                           icon: const Icon(Icons.phone_outlined, color: Colors.white),
                           label: Text(
-                            'Contact',
+                            AppStrings.contact,
                             style: TextStyle(
                               fontSize: context.responsiveFontScale(16),
                               fontWeight: FontWeight.bold,

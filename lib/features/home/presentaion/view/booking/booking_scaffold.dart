@@ -4,7 +4,6 @@ import 'package:servix/core/utils/functions/responsive.dart';
 
 class BookingStepIndicator extends StatelessWidget {
   final int currentStep; // 1, 2, or 3
-
   const BookingStepIndicator({super.key, required this.currentStep});
 
   @override

@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+enum PasswordFieldType { old, newPass, confirm }
 
 abstract class ProfileEvent extends Equatable {
   const ProfileEvent();
@@ -12,13 +13,13 @@ class FetchProfileEvent extends ProfileEvent {
 }
 
 class UpdateProfileInformationEvent extends ProfileEvent {
-  final String name;
-  final String email;
+  final String? name;
+  final String? email;
   final String? avatarUrl;
 
   const UpdateProfileInformationEvent({
-    required this.name,
-    required this.email,
+    this.name,
+    this.email,
     this.avatarUrl,
   });
 
@@ -73,4 +74,20 @@ class ToggleNightModeProfileEvent extends ProfileEvent {
 
   @override
   List<Object?> get props => [enabled];
+}
+class LanguageProfileEvent extends ProfileEvent {
+  final String language;
+
+  const LanguageProfileEvent(this.language);
+
+  @override
+  List<Object?> get props => [language];
+}
+
+class ChangePasswordObscureToggled extends ProfileEvent {
+  final PasswordFieldType field;
+  const ChangePasswordObscureToggled(this.field);
+
+  @override
+  List<Object?> get props => [field];
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
+import 'package:servix/core/widgets/app_text_field.dart';
 import 'package:servix/features/profile/presentaion/bloc/profile_bloc.dart';
 import 'package:servix/features/profile/presentaion/bloc/profile_event.dart';
 import 'package:servix/features/profile/presentaion/bloc/profile_state.dart';
@@ -12,45 +14,13 @@ import 'widgets/profile_feedback_listener.dart';
 import 'widgets/profile_save_button.dart';
 import 'widgets/profile_widgets.dart';
 
-class PersonalInformationScreen extends StatefulWidget {
+class PersonalInformationScreen extends StatelessWidget {
   const PersonalInformationScreen({super.key});
 
   @override
-  State<PersonalInformationScreen> createState() => _PersonalInformationScreenState();
-}
-
-class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
-  final _formKey = GlobalKey<FormState>();
-  late TextEditingController _nameCtrl;
-  late TextEditingController _emailCtrl;
-
-  @override
-  void initState() {
-    super.initState();
-    final profile = context.read<ProfileBloc>().state.profile;
-    _nameCtrl = TextEditingController(text: profile?.name ?? 'Khaled Ali');
-    _emailCtrl = TextEditingController(text: profile?.email ?? 'Alikhaled33@gmail.com');
-  }
-
-  @override
-  void dispose() {
-    _nameCtrl.dispose();
-    _emailCtrl.dispose();
-    super.dispose();
-  }
-
-  void _save() {
-    if (!_formKey.currentState!.validate()) return;
-    context.read<ProfileBloc>().add(
-          UpdateProfileInformationEvent(
-            name: _nameCtrl.text.trim(),
-            email: _emailCtrl.text.trim(),
-          ),
-        );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final bloc = context.read<ProfileBloc>();
+
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
         showProfileFeedback(
@@ -60,10 +30,10 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
         );
       },
       child: Scaffold(
-        appBar: const ProfileAppBar(title: 'Personal Information'),
+        appBar:  ProfileAppBar(title: AppStrings.profile, ),
         body: AppBackground(
           child: Form(
-            key: _formKey,
+            key: bloc.profileFormKey,
             child: Column(
               children: [
                 Expanded(
@@ -75,7 +45,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                         const ProfileAvatarEditable(),
                         SizedBox(height: 8.height),
                         ValueListenableBuilder<TextEditingValue>(
-                          valueListenable: _nameCtrl,
+                          valueListenable: bloc.nameCtrl,
                           builder: (context, value, _) {
                             return Text(
                               value.text,
@@ -89,7 +59,7 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                         ),
                         SizedBox(height: 2.height),
                         ValueListenableBuilder<TextEditingValue>(
-                          valueListenable: _emailCtrl,
+                          valueListenable: bloc.emailCtrl,
                           builder: (context, value, _) {
                             return Text(
                               value.text,
@@ -101,23 +71,23 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                           },
                         ),
                         SizedBox(height: 32.height),
-                        const ProfileFieldLabel(label: 'full name'),
+                         ProfileFieldLabel(label: AppStrings.fullName),
                         SizedBox(height: 8.height),
-                        ProfileTextField(
-                          controller: _nameCtrl,
-                          hintText: 'Enter your full name',
-                          prefixIcon: Icons.person_outline,
-                          validator: (v) => (v == null || v.trim().isEmpty) ? 'Name is required' : null,
+                        AppTextField(
+                          controller: bloc.nameCtrl,
+                          hint: AppStrings.enterYourFullName,
+                          prefexIcon: Icons.person_outline,
+                          validator: (v) => (v == null || v.trim().isEmpty) ? AppStrings.nameRequired : null,
                         ),
                         SizedBox(height: 20.height),
-                        const ProfileFieldLabel(label: 'Email address'),
+                         ProfileFieldLabel(label: AppStrings.email),
                         SizedBox(height: 8.height),
-                        ProfileTextField(
-                          controller: _emailCtrl,
-                          hintText: 'Enter your email or number',
-                          prefixIcon: Icons.email_outlined,
-                          keyboardType: TextInputType.emailAddress,
-                          validator: (v) => (v == null || v.trim().isEmpty) ? 'Email is required' : null,
+                        AppTextField(
+                          controller: bloc.emailCtrl,
+                          hint: AppStrings.enterYourEmail,
+                          prefexIcon: Icons.email_outlined,
+                          textInputType: TextInputType.emailAddress,
+                          validator: (v) => (v == null || v.trim().isEmpty) ? AppStrings.emailErrorEmpty : null,
                         ),
                         SizedBox(height: 32.height),
                       ],
@@ -128,7 +98,10 @@ class _PersonalInformationScreenState extends State<PersonalInformationScreen> {
                   builder: (context, state) {
                     return ProfileSaveButton(
                       isSubmitting: state.isSubmitting,
-                      onTap: _save,
+                      onTap: () {
+                        if (!bloc.profileFormKey.currentState!.validate()) return;
+                        bloc.add(const UpdateProfileInformationEvent());
+                      },
                     );
                   },
                 ),

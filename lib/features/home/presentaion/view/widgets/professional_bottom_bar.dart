@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 
 class ProfessionalBottomBar extends StatelessWidget {
@@ -70,7 +71,7 @@ class ProfessionalBottomBar extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  'Book · \$${pricePerHour?.toStringAsFixed(0) ?? '0'}/Hr',
+                  '${AppStrings.bookNow} · \$${pricePerHour?.toStringAsFixed(0) ?? '0'}/Hr',
                   style: TextStyle(
                     fontSize: context.responsiveFontScale(16),
                     fontWeight: FontWeight.bold,

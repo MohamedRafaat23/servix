@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
+import 'package:servix/core/widgets/app_text_field.dart';
 import 'package:servix/features/profile/presentaion/bloc/profile_bloc.dart';
 import 'package:servix/features/profile/presentaion/bloc/profile_event.dart';
 import 'package:servix/features/profile/presentaion/bloc/profile_state.dart';
@@ -11,49 +13,30 @@ import 'widgets/profile_feedback_listener.dart';
 import 'widgets/profile_save_button.dart';
 import 'widgets/profile_widgets.dart';
 
-class ChangePasswordScreen extends StatefulWidget {
+class ChangePasswordScreen extends StatelessWidget {
   const ChangePasswordScreen({super.key});
 
-  @override
-  State<ChangePasswordScreen> createState() => _ChangePasswordScreenState();
-}
-
-class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final _oldPassCtrl = TextEditingController();
-  final _newPassCtrl = TextEditingController();
-  final _confirmPassCtrl = TextEditingController();
-
-  bool _showOld = false;
-  bool _showNew = false;
-  bool _showConfirm = false;
-
-  @override
-  void dispose() {
-    _oldPassCtrl.dispose();
-    _newPassCtrl.dispose();
-    _confirmPassCtrl.dispose();
-    super.dispose();
-  }
-
-  void _save() {
-    if (!_formKey.currentState!.validate()) return;
-    context.read<ProfileBloc>().add(
-          ChangeUserPasswordEvent(
-            oldPassword: _oldPassCtrl.text,
-            newPassword: _newPassCtrl.text,
-          ),
-        );
+  void _save(BuildContext context) {
+    final bloc = context.read<ProfileBloc>();
+    if (!bloc.changePasswordFormKey.currentState!.validate()) return;
+    bloc.add(
+      ChangeUserPasswordEvent(
+        oldPassword: bloc.oldPassCtrl.text,
+        newPassword: bloc.newPassCtrl.text,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<ProfileBloc>();
+
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
         if (state.successMessage != null) {
-          _oldPassCtrl.clear();
-          _newPassCtrl.clear();
-          _confirmPassCtrl.clear();
+          bloc.oldPassCtrl.clear();
+          bloc.newPassCtrl.clear();
+          bloc.confirmPassCtrl.clear();
         }
         showProfileFeedback(
           context,
@@ -62,10 +45,10 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
         );
       },
       child: Scaffold(
-        appBar: const ProfileAppBar(title: 'Change Password'),
+        appBar:  ProfileAppBar(title: AppStrings.changePassword),
         body: AppBackground(
           child: Form(
-            key: _formKey,
+            key: bloc.changePasswordFormKey,
             child: Column(
               children: [
                 Expanded(
@@ -76,68 +59,95 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                     ),
                     child: Column(
                       children: [
-                        const ProfileFieldLabel(label: 'Old Password'),
+                         ProfileFieldLabel(label: AppStrings.oldPassword),
                         SizedBox(height: 8.height),
-                        ProfileTextField(
-                          controller: _oldPassCtrl,
-                          hintText: 'Enter your old password',
-                          prefixIcon: Icons.lock_outline,
-                          obscureText: !_showOld,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _showOld ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                              color: AppColors.greyColor,
-                              size: 20,
-                            ),
-                            onPressed: () => setState(() => _showOld = !_showOld),
-                          ),
-                          validator: (v) {
-                            if (v == null || v.isEmpty) return 'Old password is required';
-                            return null;
+                        BlocBuilder<ProfileBloc, ProfileState>(
+                          buildWhen: (p, c) => p.obscureOldPassword != c.obscureOldPassword,
+                          builder: (context, state) {
+                            return AppTextField(
+                              controller: bloc.oldPassCtrl,
+                              hint: AppStrings.enterYourOldPassword,
+                              prefexIcon: Icons.lock_outline,
+                              obscureText: state.obscureOldPassword,
+                              suffixIconWidget: IconButton(
+                                icon: Icon(
+                                  state.obscureOldPassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: AppColors.greyColor,
+                                  size: 20,
+                                ),
+                                onPressed: () => bloc.add(
+                                  const ChangePasswordObscureToggled(PasswordFieldType.old),
+                                ),
+                              ),
+                              validator: (v) {
+                                if (v == null || v.isEmpty) return AppStrings.oldpasswordIsRequired;
+                                return null;
+                              },
+                            );
                           },
                         ),
                         SizedBox(height: 20.height),
-                        const ProfileFieldLabel(label: 'New Password'),
+                         ProfileFieldLabel(label:AppStrings.newPassword,),
                         SizedBox(height: 8.height),
-                        ProfileTextField(
-                          controller: _newPassCtrl,
-                          hintText: 'Enter your new password',
-                          prefixIcon: Icons.lock_outline,
-                          obscureText: !_showNew,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _showNew ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                              color: AppColors.greyColor,
-                              size: 20,
-                            ),
-                            onPressed: () => setState(() => _showNew = !_showNew),
-                          ),
-                          validator: (v) {
-                            if (v == null || v.isEmpty) return 'New password is required';
-                            if (v.length < 6) return 'Password must be at least 6 characters';
-                            return null;
+                        BlocBuilder<ProfileBloc, ProfileState>(
+                          buildWhen: (p, c) => p.obscureNewPassword != c.obscureNewPassword,
+                          builder: (context, state) {
+                            return AppTextField(
+                              controller: bloc.newPassCtrl,
+                              hint: AppStrings.newPassword,
+                              prefexIcon: Icons.lock_outline,
+                              obscureText: state.obscureNewPassword,
+                              suffixIconWidget: IconButton(
+                                icon: Icon(
+                                  state.obscureNewPassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: AppColors.greyColor,
+                                  size: 20,
+                                ),
+                                onPressed: () => bloc.add(
+                                  const ChangePasswordObscureToggled(PasswordFieldType.newPass),
+                                ),
+                              ),
+                              validator: (v) {
+                                if (v == null || v.isEmpty) return AppStrings.enterYourNewPassword;
+                                if (v.length < 6) return AppStrings.password8Characters;
+                                return null;
+                              },
+                            );
                           },
                         ),
                         SizedBox(height: 20.height),
-                        const ProfileFieldLabel(label: 'Confirm Password'),
+                         ProfileFieldLabel(label: AppStrings.confirmPassword),
                         SizedBox(height: 8.height),
-                        ProfileTextField(
-                          controller: _confirmPassCtrl,
-                          hintText: 'Confirm your password',
-                          prefixIcon: Icons.lock_outline,
-                          obscureText: !_showConfirm,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _showConfirm ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                              color: AppColors.greyColor,
-                              size: 20,
-                            ),
-                            onPressed: () => setState(() => _showConfirm = !_showConfirm),
-                          ),
-                          validator: (v) {
-                            if (v == null || v.isEmpty) return 'Please confirm your password';
-                            if (v != _newPassCtrl.text) return 'Passwords do not match';
-                            return null;
+                        BlocBuilder<ProfileBloc, ProfileState>(
+                          buildWhen: (p, c) => p.obscureConfirmPassword != c.obscureConfirmPassword,
+                          builder: (context, state) {
+                            return AppTextField(
+                              controller: bloc.confirmPassCtrl,
+                              hint: AppStrings.confirmPassword,
+                              prefexIcon: Icons.lock_outline,
+                              obscureText: state.obscureConfirmPassword,
+                              suffixIconWidget: IconButton(
+                                icon: Icon(
+                                  state.obscureConfirmPassword
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  color: AppColors.greyColor,
+                                  size: 20,
+                                ),
+                                onPressed: () => bloc.add(
+                                  const ChangePasswordObscureToggled(PasswordFieldType.confirm),
+                                ),
+                              ),
+                              validator: (v) {
+                                if (v == null || v.isEmpty) return 'Please confirm your password';
+                                if (v != bloc.newPassCtrl.text) return 'Passwords do not match';
+                                return null;
+                              },
+                            );
                           },
                         ),
                       ],
@@ -145,10 +155,11 @@ class _ChangePasswordScreenState extends State<ChangePasswordScreen> {
                   ),
                 ),
                 BlocBuilder<ProfileBloc, ProfileState>(
+                  buildWhen: (p, c) => p.isSubmitting != c.isSubmitting,
                   builder: (context, state) {
                     return ProfileSaveButton(
                       isSubmitting: state.isSubmitting,
-                      onTap: _save,
+                      onTap: () => _save(context),
                     );
                   },
                 ),
