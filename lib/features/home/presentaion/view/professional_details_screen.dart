@@ -39,7 +39,6 @@ class ProfessionalDetailsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFEBF3FA),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(

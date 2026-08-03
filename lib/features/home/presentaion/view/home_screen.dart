@@ -30,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return BlocProvider(
       create: (_) => sl<HomeBloc>()..add(const HomeStarted()),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         body: AppBackground(
           child: SafeArea(
             child: BlocBuilder<HomeBloc, HomeState>(

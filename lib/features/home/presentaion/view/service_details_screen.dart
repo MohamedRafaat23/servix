@@ -23,7 +23,6 @@ class ServiceDetailsScreen extends StatelessWidget {
     return BlocProvider(
       create: (_) => sl<HomeBloc>()..add(const HomeStarted()),
       child: Scaffold(
-        backgroundColor: Colors.transparent,
         appBar: AppBar(
           title: Text(
             category.name,
