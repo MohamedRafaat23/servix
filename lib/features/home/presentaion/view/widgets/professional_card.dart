@@ -80,7 +80,7 @@ class ProfessionalCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '/hour',
+                  AppStrings.perHour,
                   style: TextStyle(
                     fontSize: context.responsiveFontScale(11),
                     color: AppColors.greyColor,
