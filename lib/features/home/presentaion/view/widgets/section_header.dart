@@ -10,6 +10,7 @@ class SectionHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -21,6 +22,7 @@ class SectionHeader extends StatelessWidget {
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: context.responsiveFontScale(15),
+              color: colorScheme.onSurface,
             ),
           ),
         ),
@@ -30,7 +32,7 @@ class SectionHeader extends StatelessWidget {
           child: Text(
             AppStrings.seeAll,
             style: TextStyle(
-              color: const Color(0xFF358BE0),
+              color: colorScheme.primary,
               fontSize: context.responsiveFontScale(13),
             ),
           ),

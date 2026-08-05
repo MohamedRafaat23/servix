@@ -4,7 +4,6 @@ class AppColors {
   // Light Mode Colors
   static const Color lightSecondaryColor = Color(0xFF1A1A1A);
   static const Color lightPrimaryColor = Color(0xFF368CE1);
-  static const Color darkPrimaryColor = Color(0xFF2A64BA);
   static const Color lightTextColor = Color(0xFF03405B);
   static const Color lightBackgroundColor = Color(0xFFFFFFFF);
   static const Color lightCardColor = Color(0xFFF5F5F5);
@@ -15,12 +14,7 @@ class AppColors {
   static const Color lightScaffoldBackgroundColor = Color(0xFFF9F9F9);
 
 
-  static const Color darkSecondaryColor = Color(0xFF097DBA);
   static const Color darkAccentColor = Color(0xFF6CC5DF);
-  static const Color darkTextColor = Color(0xFFE1E1E1);
-  static const Color darkBackgroundColor = Color(0xFF121212);
-  static const Color darkCardColor = Color(0xFF1E1E1E);
-  static const Color darkSurfaceColor = Color(0xFF2C2C2C);
 
   // Common Colors
   static const Color errorColor = Color(0xFFD32F2F);
@@ -63,4 +57,15 @@ class AppColors {
   static const Color textColor = lightTextColor;
   static const Color backgroundColor = lightBackgroundColor;
   static List<Color> gradientColors = lightGradientColors;
+
+
+
+  // Dark Mode Colors - محدثة عشان تطابق التصميم
+static const Color darkBackgroundColor = Color(0xFF0A1929); // كحلي غامق جدًا للخلفية
+static const Color darkSurfaceColor = Color(0xFF0F2438);    // للـ AppBar
+static const Color darkCardColor = Color(0xFF16293F);       // لون الكروت (أفتح من الباك جراوند شوية)
+static const Color darkPrimaryColor = Color(0xFF3B8CE8);    // الأزرق الفاتح بتاع الـ accent (تشغيل/إيقاف، الأيقونة النشطة)
+static const Color darkSecondaryColor = Color(0xFF097DBA);
+static const Color darkTextColor = Color(0xFFE1E1E1);
+static const Color darkSubTextColor = Color(0xFF8A94A6);    // للنصوص الرمادية الفاتحة تحت العناوين
 }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
@@ -30,6 +29,7 @@ class ChangePasswordScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bloc = context.read<ProfileBloc>();
+    final colorScheme = Theme.of(context).colorScheme;
 
     return BlocListener<ProfileBloc, ProfileState>(
       listener: (context, state) {
@@ -74,7 +74,7 @@ class ChangePasswordScreen extends StatelessWidget {
                                   state.obscureOldPassword
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
-                                  color: AppColors.greyColor,
+                                  color: colorScheme.onSurface.withValues(alpha: .65),
                                   size: 20,
                                 ),
                                 onPressed: () => bloc.add(
@@ -104,7 +104,7 @@ class ChangePasswordScreen extends StatelessWidget {
                                   state.obscureNewPassword
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
-                                  color: AppColors.greyColor,
+                                  color: colorScheme.onSurface.withValues(alpha: .65),
                                   size: 20,
                                 ),
                                 onPressed: () => bloc.add(
@@ -135,7 +135,7 @@ class ChangePasswordScreen extends StatelessWidget {
                                   state.obscureConfirmPassword
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined,
-                                  color: AppColors.greyColor,
+                                  color: colorScheme.onSurface.withValues(alpha: .65),
                                   size: 20,
                                 ),
                                 onPressed: () => bloc.add(

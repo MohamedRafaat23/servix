@@ -1,6 +1,5 @@
 // lib/features/home/presentation/view/widgets/category_item.dart
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/home/domain/entites/category_entity.dart';
 
@@ -12,6 +11,7 @@ class CategoryItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -19,7 +19,7 @@ class CategoryItem extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.symmetric(vertical: 10.height, horizontal: 6.width),
         decoration: BoxDecoration(
-          color: const Color(0xFFF5F7FA),
+          color: colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16),
         ),
         child: Column(
@@ -35,7 +35,7 @@ class CategoryItem extends StatelessWidget {
               style: TextStyle(
                 fontSize: context.responsiveFontScale(11),
                 fontWeight: FontWeight.w600,
-                color: AppColors.textColor,
+                color: colorScheme.onSurface,
               ),
             ),
           ],

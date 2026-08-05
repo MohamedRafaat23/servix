@@ -28,6 +28,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final oldPassCtrl = TextEditingController();
   final newPassCtrl = TextEditingController();
   final confirmPassCtrl = TextEditingController();
+  final addressAreaCtrl = TextEditingController();
+  final addressStreetCtrl = TextEditingController();
+  final addressBuildingCtrl = TextEditingController();
+  final addressFloorCtrl = TextEditingController();
+  final addressApartmentCtrl = TextEditingController();
 
   ProfileBloc({
     required this.getProfileUseCase,
@@ -43,6 +48,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<UpdateProfileInformationEvent>(_onUpdateProfileInformation);
     on<ChangeUserPasswordEvent>(_onChangeUserPassword);
     on<AddAddressProfileEvent>(_onAddAddress);
+    on<AddressCountryChanged>(_onAddressCountryChanged);
+    on<AddressCityChanged>(_onAddressCityChanged);
     on<DeleteAddressProfileEvent>(_onDeleteAddress);
     on<ToggleNotificationsProfileEvent>(_onToggleNotifications);
     on<ToggleNightModeProfileEvent>(_onToggleNightMode);
@@ -132,6 +139,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     );
   }
 
+  void _onAddressCountryChanged(
+    AddressCountryChanged event,
+    Emitter<ProfileState> emit,
+  ) => emit(state.copyWith(selectedAddressCountry: event.country));
+
+  void _onAddressCityChanged(
+    AddressCityChanged event,
+    Emitter<ProfileState> emit,
+  ) => emit(state.copyWith(selectedAddressCity: event.city));
+
   void _onToggleNotifications(ToggleNotificationsProfileEvent event, Emitter<ProfileState> emit) {
     if (state.profile != null) {
       final updated = state.profile!.copyWith(notificationsEnabled: event.enabled);
@@ -176,6 +193,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     oldPassCtrl.dispose();
     newPassCtrl.dispose();
     confirmPassCtrl.dispose();
+    addressAreaCtrl.dispose();
+    addressStreetCtrl.dispose();
+    addressBuildingCtrl.dispose();
+    addressFloorCtrl.dispose();
+    addressApartmentCtrl.dispose();
     return super.close();
   }
 }

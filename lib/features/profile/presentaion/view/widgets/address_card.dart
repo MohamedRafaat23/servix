@@ -9,10 +9,11 @@ class AddressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.width, vertical: 14.height),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
@@ -31,7 +32,7 @@ class AddressCard extends StatelessWidget {
               address,
               style: TextStyle(
                 fontSize: context.responsiveFontScale(14),
-                color: const Color(0xFF334155),
+                color: colorScheme.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),

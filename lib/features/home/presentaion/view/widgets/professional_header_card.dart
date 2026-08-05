@@ -11,11 +11,12 @@ class ProfessionalHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(16.width),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(24.radius),
         boxShadow: [
           BoxShadow(
@@ -51,7 +52,7 @@ class ProfessionalHeaderCard extends StatelessWidget {
             style: TextStyle(
               fontSize: context.responsiveFontScale(20),
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF1E293B),
+              color: colorScheme.onSurface,
             ),
           ),
           SizedBox(height: 4.height),
@@ -60,7 +61,7 @@ class ProfessionalHeaderCard extends StatelessWidget {
             '${professional.profession} · ${professional.distanceMiles} mi',
             style: TextStyle(
               fontSize: context.responsiveFontScale(14),
-              color: const Color(0xFF64748B),
+              color: colorScheme.onSurface.withValues(alpha: .65),
             ),
           ),
           SizedBox(height: 6.height),
@@ -78,7 +79,7 @@ class ProfessionalHeaderCard extends StatelessWidget {
                 '${professional.rating} · ${professional.jobsCount} Jobs',
                 style: TextStyle(
                   fontSize: context.responsiveFontScale(13),
-                  color: const Color(0xFF64748B),
+                  color: colorScheme.onSurface.withValues(alpha: .65),
                   fontWeight: FontWeight.w500,
                 ),
               ),

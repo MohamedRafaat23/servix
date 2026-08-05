@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
@@ -23,22 +22,27 @@ class SavedAddressesScreen extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => AddAddressSheet(
-        onSave: (address) {
-          bloc.add(AddAddressProfileEvent(address));
-        },
+      builder: (_) => BlocProvider.value(
+        value: bloc,
+        child: AddAddressSheet(
+          onSave: (address) {
+            bloc.add(AddAddressProfileEvent(address));
+          },
+        ),
       ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: colorScheme.surface,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF1E293B)),
+          icon: Icon(Icons.arrow_back, color: colorScheme.onSurface),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
@@ -46,7 +50,7 @@ class SavedAddressesScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: context.responsiveFontScale(18),
             fontWeight: FontWeight.bold,
-            color: const Color(0xFF1E293B),
+            color: colorScheme.onSurface,
           ),
         ),
       ),
@@ -73,7 +77,7 @@ class SavedAddressesScreen extends StatelessWidget {
                                 'No saved addresses',
                                 style: TextStyle(
                                   fontSize: context.responsiveFontScale(15),
-                                  color: AppColors.greyColor,
+                                  color: colorScheme.onSurface.withValues(alpha: .65),
                                 ),
                               ),
                             ],
@@ -104,14 +108,14 @@ class SavedAddressesScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () => _showAddAddressSheet(context),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.lightPrimaryColor,
+                          backgroundColor: colorScheme.primary,
                           elevation: 0,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(28.radius),
                           ),
                         ),
                         child: Text(
-                          'Add New Address +',
+                          '${AppStrings.addNewAddress} +',
                           style: TextStyle(
                             fontSize: context.responsiveFontScale(16),
                             fontWeight: FontWeight.bold,

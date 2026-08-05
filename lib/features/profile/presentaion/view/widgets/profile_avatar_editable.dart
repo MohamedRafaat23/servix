@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_images.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
@@ -27,7 +28,7 @@ class ProfileAvatarEditable extends StatelessWidget {
           child: CircleAvatar(
             radius: 48.width,
             backgroundColor: const Color(0xFFDDE7F0),
-            child: Image.asset(AppImages.profile),
+            child: SvgPicture.asset(AppImages.profile),
           ),
         ),
         Positioned(

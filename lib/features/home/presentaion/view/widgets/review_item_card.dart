@@ -19,13 +19,14 @@ class ReviewItemCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: EdgeInsets.all(14.width),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(18.radius),
         border: Border.all(
-          color: const Color(0xFFF1F5F9),
+          color: colorScheme.outlineVariant,
           width: 1,
         ),
         boxShadow: [
@@ -54,7 +55,7 @@ class ReviewItemCard extends StatelessWidget {
                     style: TextStyle(
                       fontSize: context.responsiveFontScale(14),
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1E293B),
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   SizedBox(height: 2.height),
@@ -62,7 +63,7 @@ class ReviewItemCard extends StatelessWidget {
                     date,
                     style: TextStyle(
                       fontSize: context.responsiveFontScale(11),
-                      color: const Color(0xFF94A3B8),
+                      color: colorScheme.onSurface.withValues(alpha: .6),
                     ),
                   ),
                 ],
@@ -88,7 +89,7 @@ class ReviewItemCard extends StatelessWidget {
             comment,
             style: TextStyle(
               fontSize: context.responsiveFontScale(13),
-              color: const Color(0xFF64748B),
+              color: colorScheme.onSurface.withValues(alpha: .7),
               height: 1.4,
             ),
           ),

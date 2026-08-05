@@ -37,10 +37,23 @@ class HomeState extends Equatable {
       categories: categories ?? this.categories,
       professionals: professionals ?? this.professionals,
       banners: banners ?? this.banners,
-      errorMessage: errorMessage ?? this.errorMessage,
+      // Error messages are transient; a subsequent state must not retain one.
+      errorMessage: errorMessage,
       searchQuery: searchQuery ?? this.searchQuery,
       currentBannerIndex: currentBannerIndex ?? this.currentBannerIndex,
     );
+  }
+
+  List<ProfessionalEntity> get filteredProfessionals {
+    final query = searchQuery.trim().toLowerCase();
+    if (query.isEmpty) return professionals;
+    return professionals
+        .where(
+          (professional) =>
+              professional.name.toLowerCase().contains(query) ||
+              professional.profession.toLowerCase().contains(query),
+        )
+        .toList();
   }
 
   @override

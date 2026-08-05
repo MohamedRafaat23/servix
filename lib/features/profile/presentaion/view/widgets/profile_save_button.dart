@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 
 class ProfileSaveButton extends StatelessWidget {
@@ -16,6 +15,7 @@ class ProfileSaveButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return SafeArea(
       child: Padding(
         padding: EdgeInsets.symmetric(
@@ -28,7 +28,7 @@ class ProfileSaveButton extends StatelessWidget {
           child: ElevatedButton(
             onPressed: isSubmitting ? null : onTap,
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.lightPrimaryColor,
+              backgroundColor: colorScheme.primary,
               elevation: 0,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.radius)),
             ),

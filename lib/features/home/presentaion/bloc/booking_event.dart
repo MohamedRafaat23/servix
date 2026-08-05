@@ -25,6 +25,27 @@ class BookingAddressRemoved extends BookingEvent {
   List<Object?> get props => [index];
 }
 
+class BookingAddressCountryChanged extends BookingEvent {
+  final String? country;
+  const BookingAddressCountryChanged(this.country);
+  @override
+  List<Object?> get props => [country];
+}
+
+class BookingAddressCityChanged extends BookingEvent {
+  final String? city;
+  const BookingAddressCityChanged(this.city);
+  @override
+  List<Object?> get props => [city];
+}
+
+class BookingSaveAddressInfoChanged extends BookingEvent {
+  final bool value;
+  const BookingSaveAddressInfoChanged(this.value);
+  @override
+  List<Object?> get props => [value];
+}
+
 class BookingMonthChanged extends BookingEvent {
   final DateTime month;
 

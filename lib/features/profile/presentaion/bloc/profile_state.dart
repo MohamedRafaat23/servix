@@ -15,6 +15,8 @@ class ProfileState extends Equatable {
   final bool obscureNewPassword;
   final bool obscureConfirmPassword;
   final String selectedLanguage;
+  final String? selectedAddressCountry;
+  final String? selectedAddressCity;
 
   const ProfileState({
     this.status = ProfileStatus.initial,
@@ -26,6 +28,8 @@ class ProfileState extends Equatable {
     this.obscureNewPassword = false,
     this.obscureConfirmPassword = false,
     this.selectedLanguage = 'en',
+    this.selectedAddressCountry,
+    this.selectedAddressCity,
   });
 
   ProfileState copyWith({
@@ -38,6 +42,8 @@ class ProfileState extends Equatable {
     bool? obscureNewPassword,
     bool? obscureConfirmPassword,
     String? selectedLanguage,
+    String? selectedAddressCountry,
+    String? selectedAddressCity,
   }) {
     return ProfileState(
       status: status ?? this.status,
@@ -49,6 +55,8 @@ class ProfileState extends Equatable {
       obscureNewPassword: obscureNewPassword ?? this.obscureNewPassword,
       obscureConfirmPassword: obscureConfirmPassword ?? this.obscureConfirmPassword,
       selectedLanguage: selectedLanguage ?? this.selectedLanguage,
+      selectedAddressCountry: selectedAddressCountry,
+      selectedAddressCity: selectedAddressCity,
     );
   }
 
@@ -63,5 +71,7 @@ class ProfileState extends Equatable {
         obscureNewPassword,
         obscureConfirmPassword,
         selectedLanguage,
+        selectedAddressCountry,
+        selectedAddressCity,
       ];
 }

@@ -1,7 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:servix/core/di/service_locator.dart';
+import 'package:servix/config/app_controller/app_controller_bloc.dart';
 import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_images.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
@@ -36,6 +38,8 @@ class _ProfileScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       body: AppBackground(
         child: SafeArea(
@@ -49,7 +53,9 @@ class _ProfileScreenBody extends StatelessWidget {
               final email = profile?.email ?? 'Alikhaled33@gmail.com';
               final notificationsEnabled =
                   profile?.notificationsEnabled ?? false;
-              final nightModeEnabled = profile?.nightModeEnabled ?? true;
+              final nightModeEnabled = context.select(
+                (AppControllerBloc bloc) => bloc.state.isDarkMode,
+              );
 
               return SingleChildScrollView(
                 padding: EdgeInsets.only(bottom: 110.height),
@@ -62,7 +68,7 @@ class _ProfileScreenBody extends StatelessWidget {
                       style: TextStyle(
                         fontSize: context.responsiveFontScale(20),
                         fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1E293B),
+                        color: colorScheme.onSurface,
                       ),
                     ),
                     SizedBox(height: 20.height),
@@ -74,7 +80,7 @@ class _ProfileScreenBody extends StatelessWidget {
                             shape: BoxShape.circle,
                             boxShadow: [
                               BoxShadow(
-                                color: AppColors.lightPrimaryColor.withValues(
+                                color: colorScheme.primary.withValues(
                                   alpha: .18,
                                 ),
                                 blurRadius: 20,
@@ -84,10 +90,10 @@ class _ProfileScreenBody extends StatelessWidget {
                           ),
                           child: CircleAvatar(
                             radius: 44.width,
-                            backgroundColor: const Color(0xFFDDE7F0),
+                            backgroundColor: colorScheme.surface,
                             child: profile?.avatarUrl != null
                                 ? Image.network(profile!.avatarUrl!)
-                                : Image.asset(AppImages.profile),
+                                : SvgPicture.asset(AppImages.profile),
                           ),
                         ),
                       ],
@@ -98,7 +104,7 @@ class _ProfileScreenBody extends StatelessWidget {
                       style: TextStyle(
                         fontSize: context.responsiveFontScale(18),
                         fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1E293B),
+                        color: colorScheme.onSurface,
                       ),
                     ),
                     SizedBox(height: 4.height),
@@ -119,7 +125,7 @@ class _ProfileScreenBody extends StatelessWidget {
                       child: Column(
                         children: [
                           ProfileMenuItem(
-                            image: AppImages.profile2,
+                            image: AppImages.profile,
                             title: AppStrings.personalInformation,
                             onTap: () {
                               final bloc = context.read<ProfileBloc>();
@@ -153,7 +159,7 @@ class _ProfileScreenBody extends StatelessWidget {
                           ),
                           SizedBox(height: 10.height),
                           ProfileMenuItem(
-                            image: AppImages.lock2,
+                            image: AppImages.lock,
                             title: AppStrings.changePassword,
                             onTap: () {
                               final bloc = context.read<ProfileBloc>();
@@ -207,13 +213,13 @@ class _ProfileScreenBody extends StatelessWidget {
                           ),
                           SizedBox(height: 10.height),
                           ProfileMenuToggle(
-                            iconColor: AppColors.lightPrimaryColor,
+                            iconColor: colorScheme.primary,
                             image: AppImages.nightIcon,
                             title: AppStrings.nightMode,
                             value: nightModeEnabled,
                             onChanged: (v) {
-                              context.read<ProfileBloc>().add(
-                                ToggleNightModeProfileEvent(v),
+                              context.read<AppControllerBloc>().add(
+                                SetThemeEvent(v),
                               );
                             },
                           ),
@@ -258,7 +264,7 @@ class _ProfileScreenBody extends StatelessWidget {
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.lightPrimaryColor,
+                            backgroundColor: colorScheme.primary,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28.radius),

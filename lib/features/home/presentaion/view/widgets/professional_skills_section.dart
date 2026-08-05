@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'section_header_with_icon.dart';
@@ -11,6 +10,7 @@ class ProfessionalSkillsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,13 +29,13 @@ class ProfessionalSkillsSection extends StatelessWidget {
                 vertical: 9.height,
               ),
               decoration: BoxDecoration(
-                color: AppColors.lightPrimaryColor,
+                color: colorScheme.primary,
                 borderRadius: BorderRadius.circular(24.radius),
               ),
               child: Text(
                 skill,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: colorScheme.onPrimary,
                   fontSize: context.responsiveFontScale(13),
                   fontWeight: FontWeight.w500,
                 ),

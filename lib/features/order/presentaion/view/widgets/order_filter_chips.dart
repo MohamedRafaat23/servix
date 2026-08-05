@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
@@ -16,6 +15,7 @@ class OrderFilterChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final filters = <(String label, OrderStatusType? type)>[
       (AppStrings.all, null),
       (AppStrings.pending, OrderStatusType.pending),
@@ -40,15 +40,15 @@ class OrderFilterChips extends StatelessWidget {
               duration: const Duration(milliseconds: 200),
               padding: EdgeInsets.symmetric(horizontal: 18.width, vertical: 8.height),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.lightPrimaryColor : Colors.white,
+                color: isSelected ? colorScheme.primary : colorScheme.surface,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
-                  color: isSelected ? AppColors.lightPrimaryColor : const Color(0xFFDDE7F0),
+                  color: isSelected ? colorScheme.primary : colorScheme.outlineVariant,
                 ),
                 boxShadow: isSelected
                     ? [
                         BoxShadow(
-                          color: AppColors.lightPrimaryColor.withValues(alpha: .25),
+                          color: colorScheme.primary.withValues(alpha: .25),
                           blurRadius: 8,
                           offset: const Offset(0, 2),
                         ),
@@ -60,7 +60,7 @@ class OrderFilterChips extends StatelessWidget {
                 style: TextStyle(
                   fontSize: context.responsiveFontScale(13),
                   fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                  color: isSelected ? Colors.white : AppColors.greyColor,
+                  color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface.withValues(alpha: .65),
                 ),
               ),
             ),

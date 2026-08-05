@@ -24,6 +24,7 @@ class AppControllerBloc extends Bloc<AppControllerEvent, AppControllerState> {
     : super(
         AppControllerState(
          isGuest: prefs.getBool(StorageKeys.isGuest),
+         isDarkMode: prefs.getBool(StorageKeys.isDarkMode),
         ),
       ) {
     on<ToggleThemeEvent>(_onToggleTheme);
@@ -45,15 +46,18 @@ class AppControllerBloc extends Bloc<AppControllerEvent, AppControllerState> {
     }
   }
 
-  void _onToggleTheme(
+  Future<void> _onToggleTheme(
     ToggleThemeEvent event,
     Emitter<AppControllerState> emit,
-  ) {
-    emit(state.copyWith(isDarkMode: !state.isDarkMode));
+  ) async {
+    final isDarkMode = !state.isDarkMode;
+    emit(state.copyWith(isDarkMode: isDarkMode));
+    await prefs.setBool(StorageKeys.isDarkMode, isDarkMode);
   }
 
-  void _onSetTheme(SetThemeEvent event, Emitter<AppControllerState> emit) {
+  Future<void> _onSetTheme(SetThemeEvent event, Emitter<AppControllerState> emit) async {
     emit(state.copyWith(isDarkMode: event.isDarkMode));
+    await prefs.setBool(StorageKeys.isDarkMode, event.isDarkMode);
   }
 
   bool canCallNotificationsApi = true;

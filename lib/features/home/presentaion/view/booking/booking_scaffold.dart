@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 
 class BookingStepIndicator extends StatelessWidget {
@@ -8,6 +7,7 @@ class BookingStepIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     const labels = [
       'Select your location',
       'Choose your appointment',
@@ -28,8 +28,8 @@ class BookingStepIndicator extends StatelessWidget {
                     height: 24.width,
                     decoration: BoxDecoration(
                       color: (isActive || isDone)
-                          ? AppColors.lightPrimaryColor
-                          : const Color(0xFFDDE7F0),
+                          ? colorScheme.primary
+                          : colorScheme.surfaceContainerHighest,
                       shape: BoxShape.circle,
                     ),
                     child: Center(
@@ -38,7 +38,7 @@ class BookingStepIndicator extends StatelessWidget {
                           : Text(
                               '$step',
                               style: TextStyle(
-                                color: isActive ? Colors.white : AppColors.greyColor,
+                            color: isActive ? colorScheme.onPrimary : colorScheme.onSurface,
                                 fontSize: context.responsiveFontScale(11),
                                 fontWeight: FontWeight.bold,
                               ),
@@ -50,8 +50,8 @@ class BookingStepIndicator extends StatelessWidget {
                       child: Container(
                         height: 2,
                         color: isDone
-                            ? AppColors.lightPrimaryColor
-                            : const Color(0xFFDDE7F0),
+                            ? colorScheme.primary
+                            : colorScheme.surfaceContainerHighest,
                       ),
                     ),
                 ],
@@ -64,7 +64,7 @@ class BookingStepIndicator extends StatelessWidget {
           labels[currentStep - 1],
           style: TextStyle(
             fontSize: context.responsiveFontScale(13),
-            color: AppColors.lightPrimaryColor,
+            color: colorScheme.primary,
             fontWeight: FontWeight.w600,
           ),
           textAlign: TextAlign.center,
@@ -96,14 +96,15 @@ class BookingScaffold extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: colorScheme.surface,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF1E293B)),
+          icon: Icon(Icons.arrow_back, color: colorScheme.onSurface),
           onPressed: () => Navigator.maybePop(context),
         ),
         title: Column(
@@ -113,14 +114,14 @@ class BookingScaffold extends StatelessWidget {
               style: TextStyle(
                 fontSize: context.responsiveFontScale(16),
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF1E293B),
+                color: colorScheme.onSurface,
               ),
             ),
             Text(
               'Step $currentStep of 3',
               style: TextStyle(
                 fontSize: context.responsiveFontScale(11),
-                color: AppColors.greyColor,
+                color: colorScheme.onSurface.withValues(alpha: .65),
               ),
             ),
           ],
@@ -155,10 +156,10 @@ class BookingScaffold extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     border: Border.all(
-                        color: const Color(0xFFDDE7F0), width: 1.5),
+                        color: colorScheme.outlineVariant, width: 1.5),
                   ),
-                  child: const Icon(Icons.arrow_back_ios_new,
-                      size: 18, color: Color(0xFF1E293B)),
+                  child: Icon(Icons.arrow_back_ios_new,
+                      size: 18, color: colorScheme.onSurface),
                 ),
               ),
               SizedBox(width: 12.width),
@@ -168,7 +169,7 @@ class BookingScaffold extends StatelessWidget {
                   child: ElevatedButton(
                     onPressed: isLoading ? null : onNext,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColors.lightPrimaryColor,
+                      backgroundColor: colorScheme.primary,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(28.radius),
@@ -199,4 +200,3 @@ class BookingScaffold extends StatelessWidget {
     );
   }
 }
-

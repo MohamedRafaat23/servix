@@ -6,11 +6,11 @@ import 'package:servix/core/di/service_locator.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
+import 'package:servix/core/widgets/professional_card.dart';
 import 'package:servix/features/home/domain/entites/category_entity.dart';
 import 'package:servix/features/home/presentaion/bloc/home_bloc.dart';
 import 'package:servix/features/home/presentaion/bloc/home_event.dart';
 import 'package:servix/features/home/presentaion/bloc/home_state.dart';
-import 'package:servix/features/home/presentaion/view/widgets/professional_card.dart';
 import 'package:servix/features/home/presentaion/view/widgets/search_widget.dart';
 
 class ServiceDetailsScreen extends StatelessWidget {
@@ -32,7 +32,7 @@ class ServiceDetailsScreen extends StatelessWidget {
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
-          foregroundColor: Colors.black,
+          foregroundColor: Theme.of(context).colorScheme.onSurface,
         ),
         extendBodyBehindAppBar: true,
         body: AppBackground(

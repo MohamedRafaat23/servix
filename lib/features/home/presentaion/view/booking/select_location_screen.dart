@@ -17,11 +17,15 @@ class SelectLocationScreen extends StatelessWidget {
   const SelectLocationScreen({super.key, required this.args});
 
   void _showAddAddressSheet(BuildContext context, ValueSetter<String> onAdd) {
+    final bloc = context.read<BookingBloc>();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _AddAddressSheet(onAdd: onAdd),
+      builder: (_) => BlocProvider.value(
+        value: bloc,
+        child: _AddAddressSheet(onAdd: onAdd),
+      ),
     );
   }
 
@@ -81,7 +85,7 @@ class _SelectLocationScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController searchController = TextEditingController();
+    final searchController = context.read<BookingBloc>().locationSearchController;
 
     void showAddAddressSheet() {
       onShowAddAddressSheet((address) {
@@ -314,51 +318,31 @@ class _AreaChip extends StatelessWidget {
   }
 }
 
-// ── Add Address Bottom Sheet ──────────────────────────────────────────────────
+// ── Add Address Bottom Sheet 
 
-class _AddAddressSheet extends StatefulWidget {
+class _AddAddressSheet extends StatelessWidget {
   final void Function(String address) onAdd;
 
-  const _AddAddressSheet({required this.onAdd});
+   _AddAddressSheet({required this.onAdd});
 
-  @override
-  State<_AddAddressSheet> createState() => _AddAddressSheetState();
-}
-
-class _AddAddressSheetState extends State<_AddAddressSheet> {
   final _formKey = GlobalKey<FormState>();
-  String? _country;
-  String? _city;
-  final _areaCtrl = TextEditingController();
-  final _streetCtrl = TextEditingController();
-  final _buildingCtrl = TextEditingController();
-  final _floorCtrl = TextEditingController();
-  final _apartmentCtrl = TextEditingController();
-  bool _saveInfo = false;
 
   final List<String> _countries = ['Saudi Arabia', 'Egypt', 'UAE', 'Kuwait', 'Jordan'];
   final List<String> _cities = ['Riyadh', 'Jeddah', 'Mecca', 'Cairo', 'Dubai'];
 
-  @override
-  void dispose() {
-    _areaCtrl.dispose();
-    _streetCtrl.dispose();
-    _buildingCtrl.dispose();
-    _floorCtrl.dispose();
-    _apartmentCtrl.dispose();
-    super.dispose();
-  }
-
-  void _submit() {
+  void _submit(BuildContext context, BookingState state) {
     if (_formKey.currentState!.validate()) {
-      final address = '${_areaCtrl.text.isNotEmpty ? _areaCtrl.text : _city ?? ''} - ${_country ?? ''}';
-      widget.onAdd(address);
+      final area = context.read<BookingBloc>().addressAreaController.text;
+      final address = '${area.isNotEmpty ? area : state.addressCity ?? ''} - ${state.addressCountry ?? ''}';
+      onAdd(address);
       Navigator.pop(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<BookingBloc>();
+    final state = context.watch<BookingBloc>().state;
     return DraggableScrollableSheet(
       initialChildSize: 0.85,
       maxChildSize: 0.95,
@@ -394,33 +378,33 @@ class _AddAddressSheetState extends State<_AddAddressSheet> {
                   label: 'Country',
                   hint: 'choose country',
                   items: _countries,
-                  value: _country,
-                  onChanged: (v) => setState(() => _country = v),
+                  value: state.addressCountry,
+                  onChanged: (v) => bloc.add(BookingAddressCountryChanged(v)),
                 ),
                 SizedBox(height: 14.height),
                 _DropdownField(
                   label: 'City',
                   hint: 'choose city',
                   items: _cities,
-                  value: _city,
-                  onChanged: (v) => setState(() => _city = v),
+                  value: state.addressCity,
+                  onChanged: (v) => bloc.add(BookingAddressCityChanged(v)),
                 ),
                 SizedBox(height: 14.height),
-                _InputField(label: 'Area', hint: 'write area', controller: _areaCtrl),
+                _InputField(label: 'Area', hint: 'write area', controller: bloc.addressAreaController),
                 SizedBox(height: 14.height),
-                _InputField(label: 'Street Name', hint: 'write street', controller: _streetCtrl),
+                _InputField(label: 'Street Name', hint: 'write street', controller: bloc.addressStreetController),
                 SizedBox(height: 14.height),
-                _InputField(label: 'Building Number', hint: 'write building number', controller: _buildingCtrl, keyboardType: TextInputType.number),
+                _InputField(label: 'Building Number', hint: 'write building number', controller: bloc.addressBuildingController, keyboardType: TextInputType.number),
                 SizedBox(height: 14.height),
-                _InputField(label: 'Floor Number', hint: 'write floor number', controller: _floorCtrl, keyboardType: TextInputType.number),
+                _InputField(label: 'Floor Number', hint: 'write floor number', controller: bloc.addressFloorController, keyboardType: TextInputType.number),
                 SizedBox(height: 14.height),
-                _InputField(label: 'Apartment Number', hint: 'write Apartment number', controller: _apartmentCtrl, keyboardType: TextInputType.number),
+                _InputField(label: 'Apartment Number', hint: 'write Apartment number', controller: bloc.addressApartmentController, keyboardType: TextInputType.number),
                 SizedBox(height: 12.height),
                 Row(
                   children: [
                     Checkbox(
-                      value: _saveInfo,
-                      onChanged: (v) => setState(() => _saveInfo = v ?? false),
+                      value: state.saveAddressInfo,
+                      onChanged: (v) => bloc.add(BookingSaveAddressInfoChanged(v ?? false)),
                       activeColor: AppColors.lightPrimaryColor,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
                     ),
@@ -454,7 +438,7 @@ class _AddAddressSheetState extends State<_AddAddressSheet> {
                       child: SizedBox(
                         height: 52.height,
                         child: ElevatedButton(
-                          onPressed: _submit,
+                          onPressed: () => _submit(context, state),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.lightPrimaryColor,
                             elevation: 0,

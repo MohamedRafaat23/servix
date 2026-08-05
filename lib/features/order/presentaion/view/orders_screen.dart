@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/di/service_locator.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
@@ -29,6 +28,7 @@ class _OrdersScreenBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+      final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: AppBackground(
@@ -41,7 +41,7 @@ class _OrdersScreenBody extends StatelessWidget {
                 style: TextStyle(
                   fontSize: context.responsiveFontScale(20),
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1E293B),
+                  color: colorScheme.onSurface,
                 ),
               ),
               SizedBox(height: 16.height),
@@ -87,7 +87,7 @@ class _OrdersScreenBody extends StatelessWidget {
                               AppStrings.noOrders,
                               style: TextStyle(
                                 fontSize: context.responsiveFontScale(15),
-                                color: AppColors.greyColor,
+                              color: colorScheme.onSurface.withValues(alpha: .65),
                               ),
                             ),
                           ],

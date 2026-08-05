@@ -13,18 +13,12 @@ import '../bloc/home_event.dart';
 import '../bloc/home_state.dart';
 import 'widgets/category_item.dart';
 import 'widgets/home_profile_widget.dart';
-import 'widgets/professional_card.dart';
+import '../../../../core/widgets/professional_card.dart';
 import 'widgets/promo_banner_carousel.dart';
 import 'widgets/search_widget.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -46,6 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
 
+                final filteredProfessionals = state.filteredProfessionals;
+
                 return Center(
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
@@ -65,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         HomeProfileWidget(
                           name: 'User',
                           address:
-                              'London, st12', // هتيجي من بيانات المستخدم الحقيقية
+                              'London, st12', 
                           onTap: () {
                             // الانتقال لشاشة البروفايل
                           },
@@ -146,35 +142,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         ListView.separated(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: state.professionals
-                              .where(
-                                (professional) =>
-                                    professional.name.toLowerCase().contains(
-                                      state.searchQuery.toLowerCase(),
-                                    ) ||
-                                    professional.profession
-                                        .toLowerCase()
-                                        .contains(
-                                          state.searchQuery.toLowerCase(),
-                                        ),
-                              )
-                              .length,
+                          itemCount: filteredProfessionals.length,
                           separatorBuilder: (_, __) =>
                               SizedBox(height: 12.height),
                           itemBuilder: (context, index) {
-                            final filteredProfessionals = state.professionals
-                                .where(
-                                  (professional) =>
-                                      professional.name.toLowerCase().contains(
-                                        state.searchQuery.toLowerCase(),
-                                      ) ||
-                                      professional.profession
-                                          .toLowerCase()
-                                          .contains(
-                                            state.searchQuery.toLowerCase(),
-                                          ),
-                                )
-                                .toList();
                             return ProfessionalCard(
                               professional: filteredProfessionals[index],
                               onTap: () {

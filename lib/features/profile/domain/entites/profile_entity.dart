@@ -19,7 +19,7 @@ class ProfileEntity extends Equatable {
     this.avatarUrl,
     this.savedAddresses = const [],
     this.notificationsEnabled = false,
-    this.nightModeEnabled = true,
+    this.nightModeEnabled = false,
     this.language
   });
 

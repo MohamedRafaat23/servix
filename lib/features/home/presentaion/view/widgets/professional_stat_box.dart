@@ -15,14 +15,15 @@ class ProfessionalStatBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Expanded(
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 12.height, horizontal: 4.width),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(18.radius),
           border: Border.all(
-            color: const Color(0xFFE2E8F0),
+            color: colorScheme.outlineVariant,
             width: 1,
           ),
         ),
@@ -31,7 +32,7 @@ class ProfessionalStatBox extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: const Color(0xFF3B82F6),
+              color: colorScheme.primary,
               size: 22.width,
             ),
             SizedBox(height: 6.height),
@@ -40,7 +41,7 @@ class ProfessionalStatBox extends StatelessWidget {
               style: TextStyle(
                 fontSize: context.responsiveFontScale(16),
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF1E293B),
+                color: colorScheme.onSurface,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -50,7 +51,7 @@ class ProfessionalStatBox extends StatelessWidget {
               label,
               style: TextStyle(
                 fontSize: context.responsiveFontScale(12),
-                color: const Color(0xFF94A3B8),
+                color: colorScheme.onSurface.withValues(alpha: .6),
                 fontWeight: FontWeight.w400,
               ),
               maxLines: 1,

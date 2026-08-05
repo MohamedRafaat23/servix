@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../utils/constants/app_images.dart';
 
@@ -17,11 +18,14 @@ class AppBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Stack(
       fit: StackFit.expand,
       children: [
-        Image.asset(
-          imagePath ?? AppImages.backgroundImage,
+        SvgPicture.asset(
+          imagePath ??
+              (isDark ? AppImages.darkBackgroundImage : AppImages.backgroundImage),
           fit: fit,
           width: double.infinity,
           height: double.infinity,

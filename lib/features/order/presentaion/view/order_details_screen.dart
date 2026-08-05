@@ -20,6 +20,7 @@ class OrderDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final isCancelled = order.status == OrderStatusType.cancelled;
 
     return BlocListener<OrderBloc, OrderState>(
@@ -37,11 +38,11 @@ class OrderDetailsScreen extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Colors.transparent,
+          backgroundColor: colorScheme.surface,
           elevation: 0,
           centerTitle: true,
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Color(0xFF1E293B)),
+            icon: Icon(Icons.arrow_back, color: colorScheme.onSurface),
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
@@ -49,7 +50,7 @@ class OrderDetailsScreen extends StatelessWidget {
             style: TextStyle(
               fontSize: context.responsiveFontScale(18),
               fontWeight: FontWeight.bold,
-              color: const Color(0xFF1E293B),
+              color: colorScheme.onSurface,
             ),
           ),
         ),
@@ -99,7 +100,7 @@ class OrderDetailsScreen extends StatelessWidget {
                                     context.read<OrderBloc>().add(ReorderEvent(order.id));
                                   },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.lightPrimaryColor,
+                              backgroundColor: colorScheme.primary,
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(28.radius),
@@ -127,7 +128,7 @@ class OrderDetailsScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text('${AppStrings.calling} ${order.providerName}...'),
-                                backgroundColor: AppColors.lightPrimaryColor,
+                                backgroundColor: colorScheme.primary,
                                 behavior: SnackBarBehavior.floating,
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                               ),
@@ -143,7 +144,7 @@ class OrderDetailsScreen extends StatelessWidget {
                             ),
                           ),
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: AppColors.lightPrimaryColor,
+                            backgroundColor: colorScheme.primary,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28.radius),

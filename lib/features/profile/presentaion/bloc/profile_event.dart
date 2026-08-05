@@ -49,6 +49,20 @@ class AddAddressProfileEvent extends ProfileEvent {
   List<Object?> get props => [address];
 }
 
+class AddressCountryChanged extends ProfileEvent {
+  final String? country;
+  const AddressCountryChanged(this.country);
+  @override
+  List<Object?> get props => [country];
+}
+
+class AddressCityChanged extends ProfileEvent {
+  final String? city;
+  const AddressCityChanged(this.city);
+  @override
+  List<Object?> get props => [city];
+}
+
 class DeleteAddressProfileEvent extends ProfileEvent {
   final int index;
 

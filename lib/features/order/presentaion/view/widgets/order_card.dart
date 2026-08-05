@@ -17,14 +17,15 @@ class OrderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(14.width),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surface,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFFDDE7F0)),
+          border: Border.all(color: colorScheme.outlineVariant),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withValues(alpha: .04),
@@ -54,7 +55,7 @@ class OrderCard extends StatelessWidget {
                         style: TextStyle(
                           fontSize: context.responsiveFontScale(14),
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1E293B),
+                          color: colorScheme.onSurface,
                         ),
                       ),
                       SizedBox(height: 2.height),
@@ -97,7 +98,7 @@ class OrderCard extends StatelessWidget {
                       style: TextStyle(
                         fontSize: context.responsiveFontScale(15),
                         fontWeight: FontWeight.bold,
-                        color: AppColors.lightPrimaryColor,
+                        color: colorScheme.primary,
                       ),
                     ),
                   ],
@@ -105,7 +106,7 @@ class OrderCard extends StatelessWidget {
               ],
             ),
             SizedBox(height: 12.height),
-            const Divider(color: Color(0xFFF1F5F9), height: 1),
+            Divider(color: colorScheme.outlineVariant, height: 1),
             SizedBox(height: 10.height),
             // Bottom rows: Date & Address
             Row(
@@ -123,7 +124,7 @@ class OrderCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: context.responsiveFontScale(12),
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xFF334155),
+                    color: colorScheme.onSurface,
                   ),
                 ),
               ],
@@ -144,7 +145,7 @@ class OrderCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: context.responsiveFontScale(12),
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xFF334155),
+                    color: colorScheme.onSurface,
                   ),
                 ),
               ],

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 
 class ProfileMenuToggle extends StatelessWidget {
@@ -22,14 +22,15 @@ class ProfileMenuToggle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final Widget iconWidget = icon != null
         ? Icon(icon, color: iconColor, size: 22.width)
-        : Image.asset(image!, width: 22.width, height: 22.width, color: iconColor);
+        : SvgPicture.asset(image!, width: 22.width, height: 22.width, color: iconColor);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 16.width, vertical: 10.height),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
@@ -49,14 +50,18 @@ class ProfileMenuToggle extends StatelessWidget {
               style: TextStyle(
                 fontSize: context.responsiveFontScale(14),
                 fontWeight: FontWeight.w600,
-                color: const Color(0xFF1E293B),
+                color: colorScheme.onSurface,
               ),
             ),
           ),
           Switch(
             value: value,
             onChanged: onChanged,
-            activeThumbColor: AppColors.lightPrimaryColor,
+            activeThumbColor: colorScheme.primary,
+            activeTrackColor: colorScheme.primary.withValues(alpha: .35),
+            inactiveThumbColor: colorScheme.onSurface.withValues(alpha: .7),
+            inactiveTrackColor: colorScheme.surfaceContainerHighest,
+            trackOutlineColor: WidgetStatePropertyAll(colorScheme.outlineVariant),
             materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
           ),
         ],

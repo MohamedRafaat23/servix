@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
@@ -11,12 +10,13 @@ class OrderDetailsHeaderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       padding: EdgeInsets.all(14.width),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFDDE7F0)),
+        border: Border.all(color: colorScheme.outlineVariant),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: .04),
@@ -41,7 +41,7 @@ class OrderDetailsHeaderCard extends StatelessWidget {
                   style: TextStyle(
                     fontSize: context.responsiveFontScale(15),
                     fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1E293B),
+                    color: colorScheme.onSurface,
                   ),
                 ),
                 SizedBox(height: 2.height),
@@ -49,7 +49,7 @@ class OrderDetailsHeaderCard extends StatelessWidget {
                   order.profession,
                   style: TextStyle(
                     fontSize: context.responsiveFontScale(12),
-                    color: AppColors.greyColor,
+                    color: colorScheme.onSurface.withValues(alpha: .65),
                   ),
                 ),
                 SizedBox(height: 4.height),
@@ -61,7 +61,7 @@ class OrderDetailsHeaderCard extends StatelessWidget {
                       '${order.rating} · ${order.jobsCount} ${AppStrings.jobs}',
                       style: TextStyle(
                         fontSize: context.responsiveFontScale(12),
-                        color: AppColors.greyColor,
+                        color: colorScheme.onSurface.withValues(alpha: .65),
                       ),
                     ),
                   ],

@@ -56,6 +56,7 @@ class NavbarScreen extends StatelessWidget {
       create: (_) => sl<NavbarBloc>(),
       child: BlocBuilder<NavbarBloc, NavbarState>(
         builder: (context, state) {
+          final colorScheme = Theme.of(context).colorScheme;
           return Scaffold(
             extendBody: true, // يخلي المحتوى يمتد تحت النافبار العائم
             body: IndexedStack(index: state.currentIndex, children: _pages),
@@ -77,7 +78,7 @@ class NavbarScreen extends StatelessWidget {
                     vertical: 4.height,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: .88),
+                    color: colorScheme.surface.withValues(alpha: .94),
                     borderRadius: BorderRadius.circular(42),
                     boxShadow: [
                       BoxShadow(

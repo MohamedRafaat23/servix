@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 
 class NavItem extends StatelessWidget {
@@ -16,6 +17,7 @@ class NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return GestureDetector(
       onTap: onTap,
       behavior: HitTestBehavior.opaque,
@@ -38,15 +40,13 @@ class NavItem extends StatelessWidget {
                 height: 56.height,
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? const Color(0xFF1F7BFF)
-                      : const Color(0xFFF0F1F3),
+                      ? colorScheme.primary
+                      : colorScheme.surfaceContainerHighest,
                   shape: BoxShape.circle,
                   boxShadow: isSelected
                       ? [
                           BoxShadow(
-                            color: const Color(
-                              0xFF1F7BFF,
-                            ).withValues(alpha: 0.25),
+                            color: colorScheme.primary.withValues(alpha: 0.25),
                             blurRadius: 12,
                             offset: const Offset(0, 4),
                           ),
@@ -54,11 +54,13 @@ class NavItem extends StatelessWidget {
                       : null,
                 ),
                 alignment: Alignment.center,
-                child: Image.asset(
+                child: SvgPicture.asset(
                   assetPath,
                   width: 30.height,
                   height: 30.height,
-                  color: isSelected ? Colors.white : Colors.grey.shade500,
+                  color: isSelected
+                      ? colorScheme.onPrimary
+                      : colorScheme.onSurface.withValues(alpha: .6),
                 ),
               ),
               SizedBox(height: 4.height),
@@ -68,7 +70,7 @@ class NavItem extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   style: TextStyle(
                     color: isSelected
-                        ? const Color(0xFF1F7BFF)
+                        ? colorScheme.primary
                         : Colors.transparent,
                     fontSize: context.responsiveFontScale(12),
                     fontWeight: FontWeight.w700,

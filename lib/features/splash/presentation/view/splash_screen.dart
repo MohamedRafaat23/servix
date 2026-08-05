@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:servix/config/router/app_routes_names.dart';
 import 'package:servix/core/utils/constants/app_images.dart';
 import 'package:servix/core/utils/constants/app_enums.dart';
@@ -37,7 +38,7 @@ class SplashScreen extends StatelessWidget {
         },
         child: Scaffold(
           body: Center(
-            child: Image.asset(
+            child: SvgPicture.asset(
               AppImages.logoServix,
               width: context.byDevice(
                 mobilePortrait: 140.width,

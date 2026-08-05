@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
@@ -11,6 +10,7 @@ class OrderSummarySection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -19,7 +19,7 @@ class OrderSummarySection extends StatelessWidget {
           style: TextStyle(
             fontSize: context.responsiveFontScale(16),
             fontWeight: FontWeight.bold,
-            color: const Color(0xFF1E293B),
+            color: colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 12.height),
@@ -43,7 +43,7 @@ class OrderSummarySection extends StatelessWidget {
               style: TextStyle(
                 fontSize: context.responsiveFontScale(15),
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF1E293B),
+                color: colorScheme.onSurface,
               ),
             ),
             Text(
@@ -51,7 +51,7 @@ class OrderSummarySection extends StatelessWidget {
               style: TextStyle(
                 fontSize: context.responsiveFontScale(16),
                 fontWeight: FontWeight.bold,
-                color: AppColors.lightPrimaryColor,
+                color: colorScheme.primary,
               ),
             ),
           ],
@@ -69,6 +69,7 @@ class _OrderSummaryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 5.height),
       child: Row(
@@ -78,7 +79,7 @@ class _OrderSummaryRow extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: context.responsiveFontScale(13),
-              color: AppColors.greyColor,
+              color: colorScheme.onSurface.withValues(alpha: .65),
             ),
           ),
           Flexible(
@@ -87,7 +88,7 @@ class _OrderSummaryRow extends StatelessWidget {
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontSize: context.responsiveFontScale(13),
-                color: const Color(0xFF334155),
+                color: colorScheme.onSurface,
                 fontWeight: FontWeight.w500,
               ),
             ),

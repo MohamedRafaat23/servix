@@ -6,6 +6,7 @@ class StorageKeys {
   static const String userPhone = 'userPhone';
   static const String userId = 'userId';
   static const String isGuest = 'isGuest';
+  static const String isDarkMode = 'isDarkMode';
   static const String onBoarding = 'onBoarding';
   static const String userPicture = 'userPicture';
   static const String userGender = 'userGender';

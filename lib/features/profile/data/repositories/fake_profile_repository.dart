@@ -18,6 +18,7 @@ class FakeProfileRepository implements ProfileRepository {
     ],
     notificationsEnabled: false,
     nightModeEnabled: true,
+    language: "en",
   );
 
   @override
@@ -77,7 +78,7 @@ class FakeProfileRepository implements ProfileRepository {
     }
     return Right(_profile.savedAddresses);
   }
-
+  
   @override
   Future<Either<Failure, ProfileEntity>> toggleNotifications(bool enabled) async {
     await Future.delayed(const Duration(milliseconds: 150));
@@ -89,6 +90,15 @@ class FakeProfileRepository implements ProfileRepository {
   Future<Either<Failure, ProfileEntity>> toggleNightMode(bool enabled) async {
     await Future.delayed(const Duration(milliseconds: 150));
     _profile = _profile.copyWith(nightModeEnabled: enabled);
+    return Right(_profile);
+  }
+  
+  @override
+  Future<Either<Failure, ProfileEntity>> changeLanguage(bool enabled) async {
+    await Future.delayed(const Duration(milliseconds: 150));
+    // In the fake repo, interpret the boolean as choosing between English and Arabic
+    final language = enabled ? 'en' : 'ar';
+    _profile = _profile.copyWith(language: language);
     return Right(_profile);
   }
 }

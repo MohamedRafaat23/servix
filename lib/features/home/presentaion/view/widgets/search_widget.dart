@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 
 class SearchWidget extends StatelessWidget {
@@ -18,11 +17,12 @@ class SearchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
       height: 52.height,
       padding: EdgeInsets.symmetric(horizontal: 12.width),
       decoration: BoxDecoration(
-        color: AppColors.backgroundColor,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(32),
         boxShadow: [
           BoxShadow(
@@ -36,20 +36,21 @@ class SearchWidget extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: AppColors.primaryColor,
+            color: colorScheme.primary,
             size: 22.width,
           ),
           SizedBox(width: 10.width),
           Expanded(
             child: TextField(
               onChanged: onChanged,
+              style: TextStyle(color: colorScheme.onSurface),
               decoration: InputDecoration(
                 hintText: hintText,
                 border: InputBorder.none,
                 isDense: true,
                 hintStyle: TextStyle(
                   fontSize: 14.width,
-                  color: AppColors.greyColor,
+                  color: colorScheme.onSurface.withValues(alpha: .6),
                 ),
               ),
             ),
@@ -61,7 +62,7 @@ class SearchWidget extends StatelessWidget {
                 width: 34.width,
                 height: 34.width,
                 decoration: BoxDecoration(
-                  color: AppColors.primaryColor,
+                  color: colorScheme.primary,
                   borderRadius: BorderRadius.circular(24),
                 ),
                 child: const Icon(

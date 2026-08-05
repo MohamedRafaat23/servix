@@ -17,6 +17,7 @@ class SectionHeaderWithIcon extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -25,7 +26,7 @@ class SectionHeaderWithIcon extends StatelessWidget {
             Icon(
               icon,
               size: 20.width,
-              color: const Color(0xFF334155),
+              color: colorScheme.onSurface,
             ),
             SizedBox(width: 8.width),
             Text(
@@ -33,7 +34,7 @@ class SectionHeaderWithIcon extends StatelessWidget {
               style: TextStyle(
                 fontSize: context.responsiveFontScale(17),
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF1E293B),
+                color: colorScheme.onSurface,
               ),
             ),
           ],
@@ -45,7 +46,7 @@ class SectionHeaderWithIcon extends StatelessWidget {
               actionText!,
               style: TextStyle(
                 fontSize: context.responsiveFontScale(13),
-                color: const Color(0xFF94A3B8),
+                color: colorScheme.primary,
                 fontWeight: FontWeight.w500,
               ),
             ),

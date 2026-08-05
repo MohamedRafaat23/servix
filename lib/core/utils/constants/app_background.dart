@@ -1,8 +1,7 @@
 // lib/core/widgets/app_background.dart
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:servix/core/utils/constants/app_images.dart';
-
 
 class AppBackground extends StatelessWidget {
   final Widget child;
@@ -16,30 +15,19 @@ class AppBackground extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       width: double.infinity,
       height: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            Color(0xFFEAF3FC), // أزرق فاتح جدًا فوق
-            Color(0xFFF7FAFD), // يميل للأبيض تحت
-          ],
-        ),
-      ),
+      color: isDark ? const Color(0xFF0A1929) : const Color(0xFFF7FAFD),
       child: Stack(
         children: [
           if (showImageOverlay)
             Positioned.fill(
-              child: Opacity(
-                opacity: 0,
-                child: Image.asset(
-                  color: AppColors.backgroundColor,
-                  AppImages.backgroundImage,
-                  fit: BoxFit.cover,
-                ),
+              child: SvgPicture.asset(
+                isDark ? AppImages.darkBackgroundImage : AppImages.backgroundImage,
+                fit: BoxFit.cover,
               ),
             ),
           child,

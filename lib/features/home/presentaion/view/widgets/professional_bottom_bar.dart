@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 
@@ -17,8 +16,9 @@ class ProfessionalBottomBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
-      color: const Color(0xFFEBF3FA),
+      color: colorScheme.surface,
       padding: EdgeInsets.only(
         left: context.responsiveHorizontalPadding,
         right: context.responsiveHorizontalPadding,
@@ -35,10 +35,10 @@ class ProfessionalBottomBar extends StatelessWidget {
               width: 54.width,
               height: 54.width,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: colorScheme.surfaceContainerHighest,
                 shape: BoxShape.circle,
                 border: Border.all(
-                  color: const Color(0xFFFFEDD5),
+                  color: colorScheme.outlineVariant,
                   width: 1.5,
                 ),
                 boxShadow: [
@@ -64,7 +64,7 @@ class ProfessionalBottomBar extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: onBookTap,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.lightPrimaryColor,
+                  backgroundColor: colorScheme.primary,
                   elevation: 0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(28.radius),

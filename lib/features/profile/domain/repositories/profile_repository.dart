@@ -18,4 +18,6 @@ abstract class ProfileRepository {
   Future<Either<Failure, List<String>>> deleteSavedAddress(int index);
   Future<Either<Failure, ProfileEntity>> toggleNotifications(bool enabled);
   Future<Either<Failure, ProfileEntity>> toggleNightMode(bool enabled);
+    Future<Either<Failure, ProfileEntity>> changeLanguage(bool enabled);
+
 }

@@ -22,7 +22,7 @@ class ProfessionalAboutSection extends StatelessWidget {
           aboutText,
           style: TextStyle(
             fontSize: context.responsiveFontScale(13.5),
-            color: const Color(0xFF64748B),
+            color: Theme.of(context).colorScheme.onSurface.withValues(alpha: .7),
             height: 1.45,
           ),
         ),

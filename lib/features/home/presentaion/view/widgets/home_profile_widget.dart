@@ -2,7 +2,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/config/app_controller/app_controller_bloc.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_images.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 
@@ -32,6 +31,7 @@ class HomeProfileWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       children: [
         Expanded(
@@ -41,14 +41,14 @@ class HomeProfileWidget extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 22.width,
-                  backgroundColor: AppColors.primaryColor.withValues(alpha: .1),
+                  backgroundColor: colorScheme.primary.withValues(alpha: .12),
                   backgroundImage: (profilePic?.isNotEmpty ?? false)
                       ? NetworkImage(profilePic!)
                       : null,
                   child: (profilePic?.isEmpty ?? true)
                       ? Icon(
                           Icons.person_rounded,
-                          color: AppColors.primaryColor,
+                          color: colorScheme.primary,
                           size: 22.width,
                         )
                       : null,
@@ -64,7 +64,7 @@ class HomeProfileWidget extends StatelessWidget {
                         style: TextStyle(
                           fontSize: context.responsiveFontScale(15),
                           fontWeight: FontWeight.bold,
-                          color: AppColors.textColor,
+                          color: colorScheme.onSurface,
                         ),
                       ),
                       SizedBox(height: 2.height),
@@ -73,7 +73,7 @@ class HomeProfileWidget extends StatelessWidget {
                           Icon(
                             Icons.location_on_rounded,
                             size: 14,
-                            color: AppColors.greyColor,
+                            color: colorScheme.onSurface.withValues(alpha: .65),
                           ),
                           const SizedBox(width: 2),
                           Expanded(
@@ -82,7 +82,7 @@ class HomeProfileWidget extends StatelessWidget {
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                 fontSize: context.responsiveFontScale(12),
-                                color: AppColors.greyColor,
+                                color: colorScheme.onSurface.withValues(alpha: .65),
                               ),
                             ),
                           ),
@@ -108,10 +108,13 @@ class HomeProfileWidget extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(8.width),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFF5F7FA),
+                      color: colorScheme.surfaceContainerHighest,
                       shape: BoxShape.circle,
                     ),
-                    child:Image.asset(AppImages.notification)
+                    child: Image.asset(
+                      AppImages.notification,
+                      color: colorScheme.primary,
+                    ),
                   ),
                   if (state.notificationsCount > 0)
                     Positioned(

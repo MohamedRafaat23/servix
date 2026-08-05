@@ -32,6 +32,7 @@ class ConfirmBookingScreen extends StatelessWidget {
       },
       child: BlocBuilder<BookingBloc, BookingState>(
         builder: (context, state) {
+          final colorScheme = Theme.of(context).colorScheme;
           final professional = args.professional;
           final address = args.selectedAddresses.isNotEmpty ? args.selectedAddresses.first : 'N/A';
           final totalWithFee = professional.pricePerHour + args.serviceFee;
@@ -53,9 +54,9 @@ class ConfirmBookingScreen extends StatelessWidget {
                   Container(
                     padding: EdgeInsets.all(14.width),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: colorScheme.surface,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: const Color(0xFFDDE7F0)),
+                      border: Border.all(color: colorScheme.outlineVariant),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: .04),
@@ -80,7 +81,7 @@ class ConfirmBookingScreen extends StatelessWidget {
                                 style: TextStyle(
                                   fontSize: context.responsiveFontScale(15),
                                   fontWeight: FontWeight.bold,
-                                  color: const Color(0xFF1E293B),
+                                  color: colorScheme.onSurface,
                                 ),
                               ),
                               SizedBox(height: 2.height),
@@ -109,7 +110,7 @@ class ConfirmBookingScreen extends StatelessWidget {
                           padding: EdgeInsets.all(6.width),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            border: Border.all(color: const Color(0xFFDDE7F0)),
+                            border: Border.all(color: colorScheme.outlineVariant),
                           ),
                           child: const Icon(Icons.check, color: Color(0xFF22C55E), size: 16),
                         ),
@@ -122,7 +123,7 @@ class ConfirmBookingScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: context.responsiveFontScale(16),
                       fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1E293B),
+                      color: colorScheme.onSurface,
                     ),
                   ),
                   SizedBox(height: 14.height),
@@ -137,7 +138,7 @@ class ConfirmBookingScreen extends StatelessWidget {
                     label: 'Service Fee',
                     value: '\$${args.serviceFee.toStringAsFixed(2)}',
                   ),
-                  const Divider(color: Color(0xFFEEF2F7), thickness: 1.5),
+                  Divider(color: colorScheme.outlineVariant, thickness: 1.5),
                   SizedBox(height: 4.height),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -147,7 +148,7 @@ class ConfirmBookingScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: context.responsiveFontScale(15),
                           fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1E293B),
+                          color: colorScheme.onSurface,
                         ),
                       ),
                       Text(
@@ -155,7 +156,7 @@ class ConfirmBookingScreen extends StatelessWidget {
                         style: TextStyle(
                           fontSize: context.responsiveFontScale(16),
                           fontWeight: FontWeight.bold,
-                          color: AppColors.lightPrimaryColor,
+                          color: colorScheme.primary,
                         ),
                       ),
                     ],
@@ -178,6 +179,7 @@ class _SummaryRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: EdgeInsets.symmetric(vertical: 7.height),
       child: Row(
@@ -187,7 +189,7 @@ class _SummaryRow extends StatelessWidget {
             label,
             style: TextStyle(
               fontSize: context.responsiveFontScale(13),
-              color: AppColors.greyColor,
+              color: colorScheme.onSurface.withValues(alpha: .65),
             ),
           ),
           Flexible(
@@ -196,7 +198,7 @@ class _SummaryRow extends StatelessWidget {
               textAlign: TextAlign.right,
               style: TextStyle(
                 fontSize: context.responsiveFontScale(13),
-                color: const Color(0xFF1E293B),
+                color: colorScheme.onSurface,
                 fontWeight: FontWeight.w600,
               ),
             ),

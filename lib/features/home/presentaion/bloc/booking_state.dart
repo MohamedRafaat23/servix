@@ -7,6 +7,9 @@ class BookingState extends Equatable {
   final String? selectedTime;
   final bool isLoading;
   final bool isSubmitted;
+  final String? addressCountry;
+  final String? addressCity;
+  final bool saveAddressInfo;
 
   const BookingState({
     this.addedAddresses = const ['Olaya District - Riyadh'],
@@ -15,6 +18,9 @@ class BookingState extends Equatable {
     this.selectedTime = '10:00 AM',
     this.isLoading = false,
     this.isSubmitted = false,
+    this.addressCountry,
+    this.addressCity,
+    this.saveAddressInfo = false,
   });
 
   BookingState copyWith({
@@ -24,6 +30,9 @@ class BookingState extends Equatable {
     String? selectedTime,
     bool? isLoading,
     bool? isSubmitted,
+    String? addressCountry,
+    String? addressCity,
+    bool? saveAddressInfo,
   }) {
     return BookingState(
       addedAddresses: addedAddresses ?? this.addedAddresses,
@@ -32,9 +41,12 @@ class BookingState extends Equatable {
       selectedTime: selectedTime ?? this.selectedTime,
       isLoading: isLoading ?? this.isLoading,
       isSubmitted: isSubmitted ?? this.isSubmitted,
+      addressCountry: addressCountry,
+      addressCity: addressCity,
+      saveAddressInfo: saveAddressInfo ?? this.saveAddressInfo,
     );
   }
 
   @override
-  List<Object?> get props => [addedAddresses, focusedMonth, selectedDate, selectedTime, isLoading, isSubmitted];
+  List<Object?> get props => [addedAddresses, focusedMonth, selectedDate, selectedTime, isLoading, isSubmitted, addressCountry, addressCity, saveAddressInfo];
 }

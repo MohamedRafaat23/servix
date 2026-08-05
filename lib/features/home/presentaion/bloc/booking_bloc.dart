@@ -1,9 +1,16 @@
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'booking_event.dart';
 import 'booking_state.dart';
 
 class BookingBloc extends Bloc<BookingEvent, BookingState> {
+  final locationSearchController = TextEditingController();
+  final addressAreaController = TextEditingController();
+  final addressStreetController = TextEditingController();
+  final addressBuildingController = TextEditingController();
+  final addressFloorController = TextEditingController();
+  final addressApartmentController = TextEditingController();
   BookingBloc()
       : super(BookingState(
           focusedMonth: DateTime.now(),
@@ -11,6 +18,9 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
         )) {
     on<BookingAddressAdded>(_onAddressAdded);
     on<BookingAddressRemoved>(_onAddressRemoved);
+    on<BookingAddressCountryChanged>((event, emit) => emit(state.copyWith(addressCountry: event.country)));
+    on<BookingAddressCityChanged>((event, emit) => emit(state.copyWith(addressCity: event.city)));
+    on<BookingSaveAddressInfoChanged>((event, emit) => emit(state.copyWith(saveAddressInfo: event.value)));
     on<BookingMonthChanged>(_onMonthChanged);
     on<BookingDateSelected>(_onDateSelected);
     on<BookingTimeSelected>(_onTimeSelected);
@@ -55,5 +65,16 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     emit(state.copyWith(isLoading: true));
     await Future.delayed(const Duration(seconds: 1));
     emit(state.copyWith(isLoading: false, isSubmitted: true));
+  }
+
+  @override
+  Future<void> close() {
+    locationSearchController.dispose();
+    addressAreaController.dispose();
+    addressStreetController.dispose();
+    addressBuildingController.dispose();
+    addressFloorController.dispose();
+    addressApartmentController.dispose();
+    return super.close();
   }
 }

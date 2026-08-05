@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../utils/constants/app_colors.dart';
 import '../utils/functions/responsive.dart';
@@ -191,7 +192,7 @@ class AppTextField extends StatelessWidget {
                             ? null
                             : GestureDetector(
                                 onTap: onTapSuffixIcon,
-                                child: Image.asset(
+                                child: SvgPicture.asset(
                                   suffixImage!,
                                   width: 26,
                                   height: 26,

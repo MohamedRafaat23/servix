@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 
 /// Shared field label used across profile sub-screens.
@@ -16,7 +15,7 @@ class ProfileFieldLabel extends StatelessWidget {
         style: TextStyle(
           fontSize: context.responsiveFontScale(13),
           fontWeight: FontWeight.w600,
-          color: const Color(0xFF334155),
+          color: Theme.of(context).colorScheme.onSurface,
         ),
       ),
     );
@@ -40,13 +39,13 @@ class ProfileSectionLabel extends StatelessWidget {
           style: TextStyle(
             fontSize: context.responsiveFontScale(13),
             fontWeight: FontWeight.w600,
-            color: AppColors.greyColor,
+            color: Theme.of(
+              context,
+            ).colorScheme.onSurface.withValues(alpha: .65),
           ),
         ),
       ),
     );
   }
 }
-
-
 

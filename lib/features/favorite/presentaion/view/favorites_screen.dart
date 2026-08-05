@@ -6,17 +6,18 @@ import 'package:servix/core/di/service_locator.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/core/widgets/app_background.dart';
+import 'package:servix/core/widgets/professional_card.dart';
 import 'package:servix/features/favorite/presentaion/bloc/favorite_bloc.dart';
 import 'package:servix/features/favorite/presentaion/bloc/favorite_event.dart';
 import 'package:servix/features/favorite/presentaion/bloc/favorite_state.dart';
 import 'package:servix/features/favorite/presentaion/view/widgets/empty_favorites_widget.dart';
-import 'package:servix/features/favorite/presentaion/view/widgets/favorite_professional_card.dart';
 
 class FavoritesScreen extends StatelessWidget {
   const FavoritesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+     final colorScheme = Theme.of(context).colorScheme;
     return BlocProvider(
       create: (_) => sl<FavoriteBloc>(),
       child: Scaffold(
@@ -37,12 +38,13 @@ class FavoritesScreen extends StatelessWidget {
                       Expanded(
                         child: Text(
                           AppStrings.favorite,
+                          
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: context.responsiveFontScale(20),
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF1E293B),
-                          ),
+                  fontSize: context.responsiveFontScale(20),
+                  fontWeight: FontWeight.bold,
+                  color: colorScheme.onSurface,
+                ),
                         ),
                       ),
                       const SizedBox(width: 40),
@@ -62,7 +64,8 @@ class FavoritesScreen extends StatelessWidget {
                       if (state.status == FavoriteStatus.failure) {
                         return Center(
                           child: Text(
-                            state.errorMessage ?? AppStrings.failedToLoadFavorites,
+                            state.errorMessage ??
+                                AppStrings.failedToLoadFavorites,
                             style: const TextStyle(color: Colors.red),
                           ),
                         );
@@ -93,19 +96,19 @@ class FavoritesScreen extends StatelessWidget {
                                 SizedBox(height: 16.height),
                             itemBuilder: (context, index) {
                               final professional = state.favorites[index];
-                              return FavoriteProfessionalCard(
+                              return ProfessionalCard(
                                 professional: professional,
-                                showOnlineDot: index == 0, // Michael Reed has online dot in mockup
+                                isFavoritesCard: true,
+                                onFavoriteToggle: () {
+                                  context.read<FavoriteBloc>().add(
+                                    FavoriteToggleRequested(professional),
+                                  );
+                                },
                                 onTap: () {
                                   context.push(
                                     AppRoutesNames.professionalDetails,
                                     extra: professional,
                                   );
-                                },
-                                onFavoriteToggle: () {
-                                  context.read<FavoriteBloc>().add(
-                                        FavoriteToggleRequested(professional),
-                                      );
                                 },
                               );
                             },

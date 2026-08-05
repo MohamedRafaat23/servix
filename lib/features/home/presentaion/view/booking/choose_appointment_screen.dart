@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/home/domain/entites/booking_args.dart';
 import 'package:servix/features/home/presentaion/bloc/booking_bloc.dart';
@@ -86,6 +85,7 @@ class _ChooseAppointmentScreenContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return BookingScaffold(
       currentStep: 2,
       buttonLabel: 'Next',
@@ -125,10 +125,10 @@ class _ChooseAppointmentScreenContent extends StatelessWidget {
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     decoration: BoxDecoration(
-                      color: isSelected ? AppColors.lightPrimaryColor : Colors.white,
+                      color: isSelected ? colorScheme.primary : colorScheme.surface,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: isSelected ? AppColors.lightPrimaryColor : const Color(0xFFDDE7F0),
+                        color: isSelected ? colorScheme.primary : colorScheme.outlineVariant,
                       ),
                     ),
                     child: Center(
@@ -137,7 +137,7 @@ class _ChooseAppointmentScreenContent extends StatelessWidget {
                         style: TextStyle(
                           fontSize: context.responsiveFontScale(12),
                           fontWeight: FontWeight.w600,
-                          color: isSelected ? Colors.white : const Color(0xFF334155),
+                          color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
                         ),
                       ),
                     ),
@@ -150,20 +150,20 @@ class _ChooseAppointmentScreenContent extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 16.width, vertical: 12.height),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF0F7FF),
+                  color: colorScheme.surfaceContainerHighest,
                   borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFCDE3F5)),
+                  border: Border.all(color: colorScheme.outlineVariant),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.calendar_today_outlined, color: Color(0xFF368CE1), size: 18),
+                    Icon(Icons.calendar_today_outlined, color: colorScheme.primary, size: 18),
                     SizedBox(width: 8.width),
                     Expanded(
                       child: Text(
                         '${state.selectedDate.day} ${weekdayAbbr(state.selectedDate.weekday)}, ${state.selectedDate.year} - ${state.selectedTime}',
                         style: TextStyle(
                           fontSize: context.responsiveFontScale(13),
-                          color: const Color(0xFF334155),
+                          color: colorScheme.onSurface,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -193,7 +193,7 @@ class _SectionTitle extends StatelessWidget {
       style: TextStyle(
         fontSize: context.responsiveFontScale(15),
         fontWeight: FontWeight.bold,
-        color: const Color(0xFF1E293B),
+        color: Theme.of(context).colorScheme.onSurface,
       ),
     );
   }
@@ -218,6 +218,7 @@ class _DateSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     // build 7 days starting from today
     final today = DateTime.now();
     final startDay = DateTime(focusedMonth.year, focusedMonth.month, today.day > 25 ? 1 : today.day);
@@ -239,20 +240,20 @@ class _DateSelector extends StatelessWidget {
               style: TextStyle(
                 fontSize: context.responsiveFontScale(14),
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF1E293B),
+                color: colorScheme.onSurface,
               ),
             ),
             Row(
               children: [
                 IconButton(
-                  icon: const Icon(Icons.chevron_left, color: Color(0xFF94A3B8)),
+                  icon: Icon(Icons.chevron_left, color: colorScheme.onSurface.withValues(alpha: .6)),
                   onPressed: onPreviousMonth,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
                 ),
                 SizedBox(width: 8.width),
                 IconButton(
-                  icon: const Icon(Icons.chevron_right, color: Color(0xFF94A3B8)),
+                  icon: Icon(Icons.chevron_right, color: colorScheme.onSurface.withValues(alpha: .6)),
                   onPressed: onNextMonth,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(),
@@ -281,10 +282,10 @@ class _DateSelector extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   width: 50.width,
                   decoration: BoxDecoration(
-                    color: isSelected ? AppColors.lightPrimaryColor : Colors.white,
+                    color: isSelected ? colorScheme.primary : colorScheme.surface,
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(
-                      color: isSelected ? AppColors.lightPrimaryColor : const Color(0xFFDDE7F0),
+                      color: isSelected ? colorScheme.primary : colorScheme.outlineVariant,
                     ),
                   ),
                   child: Column(
@@ -294,7 +295,7 @@ class _DateSelector extends StatelessWidget {
                         weekAbbr[d.weekday - 1],
                         style: TextStyle(
                           fontSize: context.responsiveFontScale(11),
-                          color: isSelected ? Colors.white70 : const Color(0xFF94A3B8),
+                          color: isSelected ? colorScheme.onPrimary.withValues(alpha: .75) : colorScheme.onSurface.withValues(alpha: .6),
                         ),
                       ),
                       SizedBox(height: 4.height),
@@ -303,7 +304,7 @@ class _DateSelector extends StatelessWidget {
                         style: TextStyle(
                           fontSize: context.responsiveFontScale(16),
                           fontWeight: FontWeight.bold,
-                          color: isSelected ? Colors.white : const Color(0xFF1E293B),
+                          color: isSelected ? colorScheme.onPrimary : colorScheme.onSurface,
                         ),
                       ),
                     ],

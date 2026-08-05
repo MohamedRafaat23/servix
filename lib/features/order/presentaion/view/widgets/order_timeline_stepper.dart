@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/order/domain/entites/order_entity.dart';
@@ -11,6 +10,7 @@ class OrderTimelineStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     final steps = order.timelineSteps.isNotEmpty
         ? order.timelineSteps
         :  [
@@ -31,16 +31,16 @@ class OrderTimelineStepper extends StatelessWidget {
           style: TextStyle(
             fontSize: context.responsiveFontScale(16),
             fontWeight: FontWeight.bold,
-            color: const Color(0xFF1E293B),
+            color: colorScheme.onSurface,
           ),
         ),
         SizedBox(height: 12.height),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 16.width, vertical: 16.height),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: const Color(0xFFDDE7F0)),
+            border: Border.all(color: colorScheme.outlineVariant),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: .03),
@@ -72,11 +72,11 @@ class OrderTimelineStepper extends StatelessWidget {
                             color: showCheck
                                 ? const Color(0xFF22C55E)
                                 : isCurrentStep
-                                    ? AppColors.lightPrimaryColor
-                                    : Colors.white,
+                                    ? colorScheme.primary
+                                    : colorScheme.surface,
                             border: showCheck || isCurrentStep
                                 ? null
-                                : Border.all(color: const Color(0xFFDDE7F0), width: 1.5),
+                                : Border.all(color: colorScheme.outlineVariant, width: 1.5),
                           ),
                           child: Center(
                             child: showCheck
@@ -88,7 +88,7 @@ class OrderTimelineStepper extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       color: isCurrentStep
                                           ? Colors.white
-                                          : const Color(0xFF94A3B8),
+                                          : colorScheme.onSurface.withValues(alpha: .6),
                                     ),
                                   ),
                           ),
@@ -99,7 +99,7 @@ class OrderTimelineStepper extends StatelessWidget {
                               width: 2,
                               color: showCheck
                                   ? const Color(0xFF22C55E)
-                                  : const Color(0xFFE2E8F0),
+                                  : colorScheme.outlineVariant,
                             ),
                           ),
                       ],
@@ -118,8 +118,8 @@ class OrderTimelineStepper extends StatelessWidget {
                                 fontSize: context.responsiveFontScale(14),
                                 fontWeight: FontWeight.bold,
                                 color: (showCheck || isCurrentStep)
-                                    ? const Color(0xFF1E293B)
-                                    : const Color(0xFF94A3B8),
+                                    ? colorScheme.onSurface
+                                    : colorScheme.onSurface.withValues(alpha: .6),
                               ),
                             ),
                             if (step.timeOrStatus != null) ...[
@@ -128,7 +128,7 @@ class OrderTimelineStepper extends StatelessWidget {
                                 step.timeOrStatus!,
                                 style: TextStyle(
                                   fontSize: context.responsiveFontScale(11),
-                                  color: AppColors.greyColor,
+                                  color: colorScheme.onSurface.withValues(alpha: .65),
                                 ),
                               ),
                             ],

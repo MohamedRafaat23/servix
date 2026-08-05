@@ -1,60 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:servix/core/utils/constants/app_colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
+import 'package:servix/features/profile/presentaion/bloc/profile_bloc.dart';
+import 'package:servix/features/profile/presentaion/bloc/profile_event.dart';
+import 'package:servix/features/profile/presentaion/bloc/profile_state.dart';
 import 'map_grid_painter.dart';
 import 'sheet_dropdown.dart';
 import 'sheet_input.dart';
 
-class AddAddressSheet extends StatefulWidget {
+class AddAddressSheet extends StatelessWidget {
   final void Function(String address) onSave;
-  const AddAddressSheet({super.key, required this.onSave});
-
-  @override
-  State<AddAddressSheet> createState() => _AddAddressSheetState();
-}
-
-class _AddAddressSheetState extends State<AddAddressSheet> {
-  String? _country;
-  String? _city;
-  final _areaCtrl = TextEditingController();
-  final _streetCtrl = TextEditingController();
-  final _buildingCtrl = TextEditingController();
-  final _floorCtrl = TextEditingController();
-  final _apartmentCtrl = TextEditingController();
+   AddAddressSheet({super.key, required this.onSave});
 
   final List<String> _countries = ['Saudi Arabia', 'Egypt', 'UAE', 'Kuwait', 'Jordan'];
   final List<String> _cities = ['Riyadh', 'Jeddah', 'Mecca', 'Cairo', 'Dubai'];
 
-  @override
-  void dispose() {
-    _areaCtrl.dispose();
-    _streetCtrl.dispose();
-    _buildingCtrl.dispose();
-    _floorCtrl.dispose();
-    _apartmentCtrl.dispose();
-    super.dispose();
-  }
-
-  void _save() {
-    final area = _areaCtrl.text.trim();
-    final country = _country ?? '';
+  void _save(BuildContext context, ProfileState state) {
+    final area = context.read<ProfileBloc>().addressAreaCtrl.text.trim();
+    final country = state.selectedAddressCountry ?? '';
     if (area.isEmpty && country.isEmpty) return;
-    final address = '${area.isNotEmpty ? area : _city ?? ''} - ${country.isNotEmpty ? country : "Unknown"}';
-    widget.onSave(address);
+    final address = '${area.isNotEmpty ? area : state.selectedAddressCity ?? ''} - ${country.isNotEmpty ? country : "Unknown"}';
+    onSave(address);
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    final bloc = context.read<ProfileBloc>();
+    final state = context.watch<ProfileBloc>().state;
+    final colorScheme = Theme.of(context).colorScheme;
     return DraggableScrollableSheet(
       initialChildSize: 0.88,
       maxChildSize: 0.95,
       minChildSize: 0.5,
       builder: (_, sc) => Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        decoration: BoxDecoration(
+          color: colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
         ),
         child: ListView(
           controller: sc,
@@ -66,7 +49,7 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
                 height: 4.height,
                 margin: EdgeInsets.only(bottom: 16.height),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFDDE7F0),
+                  color: colorScheme.outlineVariant,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -76,7 +59,7 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
               style: TextStyle(
                 fontSize: context.responsiveFontScale(18),
                 fontWeight: FontWeight.bold,
-                color: const Color(0xFF1E293B),
+                color: colorScheme.onSurface,
               ),
               textAlign: TextAlign.center,
             ),
@@ -85,8 +68,8 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
               height: 140.height,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(16),
-                color: const Color(0xFFE8F4FF),
-                border: Border.all(color: const Color(0xFFCDE3F5)),
+                color: colorScheme.surfaceContainerHighest,
+                border: Border.all(color: colorScheme.outlineVariant),
               ),
               child: Stack(
                 children: [
@@ -110,7 +93,7 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
                       child: Container(
                         padding: EdgeInsets.symmetric(horizontal: 16.width, vertical: 6.height),
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: colorScheme.surface,
                           borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(color: Colors.black.withValues(alpha: .08), blurRadius: 6),
@@ -119,12 +102,12 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Icons.my_location, color: AppColors.lightPrimaryColor, size: 14.width),
+                            Icon(Icons.my_location, color: colorScheme.primary, size: 14.width),
                             SizedBox(width: 5.width),
                             Text(
                               AppStrings.setLocationInMap,
                               style: TextStyle(
-                                color: AppColors.lightPrimaryColor,
+                                color: colorScheme.primary,
                                 fontSize: context.responsiveFontScale(12),
                                 fontWeight: FontWeight.w600,
                               ),
@@ -142,40 +125,40 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
               label: AppStrings.chooseCountry,
               hint: AppStrings.chooseCountryHint,
               items: _countries,
-              value: _country,
-              onChanged: (v) => setState(() => _country = v),
+              value: state.selectedAddressCountry,
+              onChanged: (v) => bloc.add(AddressCountryChanged(v)),
             ),
             SizedBox(height: 12.height),
             SheetDropdown(
               label: AppStrings.chooseCity,
               hint: AppStrings.chooseCityHint,
               items: _cities,
-              value: _city,
-              onChanged: (v) => setState(() => _city = v),
+              value: state.selectedAddressCity,
+              onChanged: (v) => bloc.add(AddressCityChanged(v)),
             ),
             SizedBox(height: 12.height),
-            SheetInput(label: AppStrings.area, hint: AppStrings.writeArea, controller: _areaCtrl),
+            SheetInput(label: AppStrings.area, hint: AppStrings.writeArea, controller: bloc.addressAreaCtrl),
             SizedBox(height: 12.height),
-            SheetInput(label: AppStrings.streetName, hint: AppStrings.writeStreetName, controller: _streetCtrl),
+            SheetInput(label: AppStrings.streetName, hint: AppStrings.writeStreetName, controller: bloc.addressStreetCtrl),
             SizedBox(height: 12.height),
             SheetInput(
               label: AppStrings.buildingNumber,
               hint: AppStrings.writeBuildingNumber,
-              controller: _buildingCtrl,
+              controller: bloc.addressBuildingCtrl,
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 12.height),
             SheetInput(
               label: AppStrings.floorNumber,
               hint: AppStrings.writeFloorNumber,
-              controller: _floorCtrl,
+              controller: bloc.addressFloorCtrl,
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 12.height),
             SheetInput(
               label: AppStrings.apartmentNumber,
               hint: AppStrings.writeApartmentNumber,
-              controller: _apartmentCtrl,
+              controller: bloc.addressApartmentCtrl,
               keyboardType: TextInputType.number,
             ),
             SizedBox(height: 20.height),
@@ -183,9 +166,9 @@ class _AddAddressSheetState extends State<AddAddressSheet> {
               width: double.infinity,
               height: 52.height,
               child: ElevatedButton(
-                onPressed: _save,
+                onPressed: () => _save(context, state),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.lightPrimaryColor,
+                  backgroundColor: colorScheme.primary,
                   elevation: 0,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28.radius)),
                 ),

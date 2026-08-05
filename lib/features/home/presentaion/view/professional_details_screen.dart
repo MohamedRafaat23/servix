@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:servix/core/di/service_locator.dart';
-import 'package:servix/core/utils/constants/app_images.dart';
 import 'package:servix/core/utils/constants/app_strings.dart';
 import 'package:servix/core/utils/functions/responsive.dart';
 import 'package:servix/features/favorite/presentaion/bloc/favorite_bloc.dart';
@@ -38,13 +37,13 @@ class ProfessionalDetailsScreen extends StatelessWidget {
         '${professional.name.split(' ').first} has served the Brooklyn area for over ${professional.experiance} years, specializing in ${professional.profession.toLowerCase()} with a focus on residential jobs. Fully licensed, insured, and background-checked.';
 
     return Scaffold(
-      backgroundColor: const Color(0xFFEBF3FA),
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-      backgroundColor: const Color(0xFFEBF3FA),
+      backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Color(0xFF1E293B)),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).colorScheme.onSurface),
           onPressed: () => Navigator.maybePop(context),
         ),
         title: Text(
@@ -52,7 +51,7 @@ class ProfessionalDetailsScreen extends StatelessWidget {
           style: TextStyle(
             fontSize: context.responsiveFontScale(18),
             fontWeight: FontWeight.bold,
-            color: const Color(0xFF1E293B),
+            color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
         actions: [
@@ -73,23 +72,13 @@ class ProfessionalDetailsScreen extends StatelessWidget {
           ),
 
           IconButton(
-            icon: const Icon(Icons.share_outlined, color: Color(0xFF334155)),
+            icon: Icon(Icons.share_outlined, color: Theme.of(context).colorScheme.onSurface),
             onPressed: () {},
           ),
         ],
       ),
       body: Stack(
         children: [
-          Positioned.fill(
-            child: Opacity(
-              opacity: 0.12,
-              child: Image.asset(
-                AppImages.backgroundImage,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => const SizedBox.shrink(),
-              ),
-            ),
-          ),
           SingleChildScrollView(
             padding: EdgeInsets.symmetric(
               horizontal: context.responsiveHorizontalPadding,
